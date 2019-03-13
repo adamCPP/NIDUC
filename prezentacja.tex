@@ -1,4 +1,4 @@
-\documentclass[3mm]{beamer}
+\documentclass[12pt]{beamer}
 
 \usepackage[utf8]{inputenc} 			%Pakiet kodowania znaków
 \usepackage[OT4]{polski} 				%Pakiet języka polskiego
@@ -15,17 +15,24 @@
 
 \author{\color{mdgray}\fontfamily{qtm}\selectfont Weronika Mrugała, Adam Szcześniak,\\Adam Cierniak}
 
-
-
 \date{}
 
 \usefonttheme{serif}
-\setbeamercolor{frametitle}{fg=black}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{itemize item}[circle]
+
+%Kiepsko działa to poniższe
+%\setbeamercolor{frametitle}{fg=black}
 \setbeamercolor{structure}{fg=black}
 \setbeamercolor{normal text}{fg=black}
+\setbeamercolor{frame}{bg=mdgray}
 %\setbeamerfont{frametitle}{\emph}
 \setbeamercolor{frametitle}{bg=mdgray}
-\setbeamercolor{frametitle}{fg=white}
+%\setbeamercolor{frametitle}{fg=white}
+
+%Białe 'j' aby utrzymać linię \hrule na stałym poziomie
+\setbeamertemplate{frametitle}{ 
+        \color{mdgray}{\hspace{2ex}\emph{\insertframetitle}\color{white}{j}\color{mdgray} \hfill {\ifnum0= \insertsectionnumber {} \else \emph{\large\insertsectionnumber} \fi} \hspace{1ex} \hrule}}
 
 
 \begin{document}
@@ -33,32 +40,65 @@
 \begin{frame}
 	\tikz [remember picture,overlay]
     \node at
-        ([yshift=3cm]current page.center) 
-        %or: (current page.center)
-        {\includegraphics[scale=0.1]{logotyp/logo_PWr_czarne_poziom__bez_tla.png}};
+        ([yshift=-1.5cm]current page.north) 
+        {\includegraphics[scale=0.12]{logotyp/logo_PWr_czarne_poziom__bez_tla.png}};
 	\maketitle
 \end{frame}
 
-\begin{frame}
-	\frametitle{{Zawartość prezentacji}}
-	\setcounter{tocdepth}{2}
-	\pagenumbering{arabic}
+\pagenumbering{arabic}
+
+\begin{frame}{Plan prezentacji}
+	\setcounter{section}{0}
 	\tableofcontents
 \end{frame}
 
 \section{Wstęp}	
-\begin{frame}{Wstęp}
-	
-	Czym są kody korekcyjne, kiedy się je stosuje, historia.
+\setcounter{section}{1}
+\begin{frame}{Wstęp}	
+	Czym są kody korekcyjne, kiedy się je stosuje, historia, wprowadzenie pojęć.
 \end{frame}
 
 \section{Przykłady kodów FEC}
 	\subsection{Potrajanie bitów}
-\begin{frame}
-	\subsection{BCH}
-	\subsection{Kodowanie Reeda-Salomona}
-	\section{Porównanie}
+\begin{frame}{Potrajanie bitów}
+	
 \end{frame}
-\note{Nie mam pojęcia jak to numerować}
+\note{Tak można robić notatki, które później są widoczne na komputerze, ale nie rzutniku. Trzeba tylko ogarnąć jak to się dokładnie robi.}
+
+\subsection{BCH}
+\begin{frame}{BCH}
+
+\end{frame}
+	
+\subsection{Kodowanie Reeda-Salomona}
+\begin{frame}{Kodowanie Reeda-Salomona}
+
+\end{frame}
+
+\section{Porównanie}
+\begin{frame}{Porównanie}
+Jakaś tabela porównawcza kodów korekcyjnych:
+\begin{itemize}
+		\item blokowe, czy jest przeplot
+		\item sprawność (współczynnik) kodowania k/n
+		\item możliwości detekcyjne i korekcyjne, dmin?
+		\item systematyczne czy niesystematyczne?
+		\item binarny/niebinarny???
+		\item zysk kodowy w dB???
+		\item odporność na błędy seryjne
+		\item \ldots
+\end{itemize}
+		
+\end{frame}
+
+\section{Bibliografia}
+\begin{frame}{Bibliografia}
+	
+\end{frame}
+
+\section*{Pytania}
+\begin{frame}
+	\centering \Large\emph{Dziękujemy za uwagę. Pytania?}
+\end{frame}
 
 \end{document}
