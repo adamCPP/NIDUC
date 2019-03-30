@@ -1,7 +1,7 @@
 Projekt NIDUC
 
 TODO:
--wybrać temat projektu
+- zrobic prezentacje
 
 CODING_STANDARDS:
 -camelCase
