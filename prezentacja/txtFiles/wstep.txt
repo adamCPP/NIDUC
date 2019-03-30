@@ -1,0 +1,3 @@
+FEC- (Forward error corection) - jest techniką cyfrowego przetwarzania sygnałów mającą na celu odtworzenie pierwotnej informacji z zakłóconego sygnalu.
+Ma wyeliminować konieczność ponownego przesyłania sygnału przez kanał transmisyjny. Technika ta polega na dodawaniu dodadkowych bitów, które mają umożliwić korekcję błędów.
+Dodatkowe bity mogą być dodwane w różny sposób, stąd istnieje wiele różnych rodzajów kodów FEC.
