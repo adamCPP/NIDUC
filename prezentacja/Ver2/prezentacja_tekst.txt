@@ -1,0 +1,32 @@
+SLAJD 3: HISTORIA, OPIS, POJĘCIA, ZASTOSOWANIA
+
+Historia:
+Matematyczne podstawy dla FEC zostały opracowane przez Claude Shannona w 1948r. Z jego teori wynika że oprócz retransmisji danych najlepszą metodą na ich poprawny odbiór jest zastosowanie nadmiarowych kodów korekcyjnych. Nie podał on jednak żadnych praktycznych rozwiazań.
+
+Pojęcia:
+?Pojedyńczy bład transmisji.
+?Grupowy błąd transmisji.
+?Nadmiarowość.
+
+
+Zastosowania:
+Nadmiarowe kody korekcyjne stosuje w systemach w których retransmisja danych jest nieopłacalna lub niemożliwa do implementacji. Przykładem mogą być płyty CD/DVD w których, z powodu rys, ponowna transmisja poprawnych danych jest niemożliwa.
+W przypadku płyty CD prawie połowa jej pojemności jest zajęta przez dane pozwalające odczytać zawartość pomimo uszkodzeń powierzchni.
+
+SLAJD 4: KODY CYKLICZNO-NADMIAROWE OPIS
+
+SLAJD 5: POTRAJANIE BITÓW
+Najprostrza forma korekcji błędów. Polega na trzykrotnym powieleniu każdego bitu.
+
++Łatwa i tania w implementacji.
++Wysoka odporność na pojedyńcze błędy transmisji.
+-Trzykrotny narzut informacji.
+-ogromna podatność na grupowe błędy transmisji.
+
+Modyfikacja: Przeplot danych(rozrzut)- zmniejsza podatność na błędy grupowe./Ograniczone przez wielkość buforu danych odbiornika.
+
+SLAJD 6: KODOWANIE BCH
+
+
+
+
