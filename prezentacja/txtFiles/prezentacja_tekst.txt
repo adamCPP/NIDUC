@@ -13,7 +13,7 @@ Zastosowania:
 Nadmiarowe kody korekcyjne stosuje w systemach w których retransmisja danych jest nieopłacalna lub niemożliwa do implementacji. Przykładem mogą być płyty CD/DVD w których, z powodu rys, ponowna transmisja poprawnych danych jest niemożliwa.
 W przypadku płyty CD prawie połowa jej pojemności jest zajęta przez dane pozwalające odczytać zawartość pomimo uszkodzeń powierzchni.
 
-SLAJD 4: KODY CYKLICZNO-NADMIAROWE OPIS
+SLAJD 4: KODY NADMIAROWE OPIS
 
 SLAJD 5: POTRAJANIE BITÓW
 Najprostrza forma korekcji błędów. Polega na trzykrotnym powieleniu każdego bitu.
@@ -22,10 +22,22 @@ Najprostrza forma korekcji błędów. Polega na trzykrotnym powieleniu każdego 
 +Wysoka odporność na pojedyńcze błędy transmisji.
 -Trzykrotny narzut informacji.
 -ogromna podatność na grupowe błędy transmisji.
-
 Modyfikacja: Przeplot danych(rozrzut)- zmniejsza podatność na błędy grupowe./Ograniczone przez wielkość buforu danych odbiornika.
 
+SLAJD 7: KOD HAMNIGA
+
+Przykład 4b -> 7b
+SPOSÓB KODOWANIA I DEKODOWANIA:
+
++Stosunkowo mały narzut danych.
++Algorytm szybki i skuteczny przy naprawianiu pojedyńczych błędów transmisji.
++Łatwy do implementacji.
+-Nie naprawia (może wykryć) grupowych błędów transmisji.
+
 SLAJD 6: KODOWANIE BCH
+
+SLAJD 7: KODOWANIE REEDA_SOLOMONA
+
 
 
 

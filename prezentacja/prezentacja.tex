@@ -10,10 +10,10 @@
 \definecolor{mdgray}{RGB}{100,105,100}
 
 \title{\centering\color[RGB]{1,5,1}\emph{\fontfamily{qcs}\selectfont
-\hfill\\\hfill\\\hfill\\\hfill\\Transmisja w systemie FEC \\ Forward Error Correction \\
-\noindent\rule{4cm}{0.4pt}}}
+\hfill\\\hfill\\\hfill\\\hfill\\Transmisja w systemie\\ Forward Error Correction \\
+\noindent\rule{5cm}{0.5pt}}}
 
-\author{\color{mdgray}\fontfamily{qtm}\selectfont Weronika Mrugała, Adam Szcześniak,\\Adam Cierniak}
+\author{\color{mdgray}\fontfamily{qtm}\selectfont Weronika Mrugała\\Adam Szcześniak\\Adam Cierniak}
 
 \date{}
 
@@ -55,21 +55,51 @@
 \section{Wstęp}	
 \setcounter{section}{1}
 \begin{frame}{Wstęp}	
-	Czym są kody korekcyjne, kiedy się je stosuje, historia, wprowadzenie pojęć.
+	Czym są kody korekcyjne?
 \end{frame}
 
-\section{Przykłady kodów FEC}
-	\subsection{Potrajanie bitów}
+
+\note{///Tak można robić notatki, które później są widoczne na komputerze, ale nie rzutniku. Trzeba tylko ogarnąć jak to się dokładnie robi.
+///A to nie działa tak, że można te notatki wydrukować, ale nie pokażą się na rzutniku/ekranie?}
+
+
+\section{Kody Cykliczne}
+\setcounter{section}{1}
+
+\subsection{Potrajanie bitów}
 \begin{frame}{Potrajanie bitów}
-	
-\end{frame}
-\note{Tak można robić notatki, które później są widoczne na komputerze, ale nie rzutniku. Trzeba tylko ogarnąć jak to się dokładnie robi.}
+\begin{center}
+Potrajaine bitów\\
+Najprostrzy sposób na korekcję błędów transmiji.
+\includegraphics[scale= 0.25]{Potrajanie/potrajanie_proste.png}\\
+Możliwe jest rozwinięcie kodu o przeplot danych.
+\includegraphics[scale=0.25]{Potrajanie/potrajanie_przeplot.png}
 
+\end{center}
+
+\end{frame}
+
+\subsection{Kod Haminga}
+\begin{frame}{Kod Haminga}
+Przykład kodowania i dekodowania danych w kodzie Haminga
+\begin{center}
+\includegraphics[scale= 0.30]{Haming/Kodowanie_Haming.png}
+\includegraphics[scale=0.30]{Haming/Dekodowanie_Haming.png}
+\end{center}
+\end{frame}
 \subsection{BCH}
 \begin{frame}{BCH}
 
+
 \end{frame}
 	
+
+\section{Kody RS}
+\begin{frame}{Kody JAKIEŚ TAM- Opis}
+\setcounter{section}{1}
+
+\end{frame}
+
 \subsection{Kodowanie Reeda-Salomona}
 \begin{frame}{Kodowanie Reeda-Salomona}
 
