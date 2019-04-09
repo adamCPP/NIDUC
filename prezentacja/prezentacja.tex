@@ -84,7 +84,7 @@
 \end{frame}
 
 \begin{frame}{Wstęp}
-	\emph{\textbf{Zdolność detekcyjna}} -- maksymalna liczba wykrywalnych błędów wynosi $d_{Hmin}-1$, gdzie \emph{d_Hmin} oznacza minimalną odległość Hamminga pomiędzy różnymi słowami kodowymi.\\
+	\emph{\textbf{Zdolność detekcyjna}} -- maksymalna liczba wykrywalnych błędów wynosi $d_{Hmin}-1$, gdzie \emph{$d_{Hmin}$} oznacza minimalną odległość Hamminga pomiędzy różnymi słowami kodowymi.\\
 	\emph{\textbf{Zdolność korekcyjna}} -- maksymalna liczba korygowalnych błędów, 
 	\begin{equation}
 \Bigl\lfloor \frac{d_{Hmin}-1}{2} \Bigr\rfloor	
@@ -141,7 +141,8 @@ Przepustowość kanału szumu białego (\emph{Additive White Gaussian Noise, AWG
 C=B\cdot\log_2(1+\frac{S}{B \cdot N_0}) [\frac{bit}{s}],
 \end{equation}
 gdzie: \emph{B} -- szerokość pasma [Hz], \emph{S} -- moc sygnału nadawanego,
-\emph{N_{0}} -- gęstość widmowa szumu białego.
+\emph{N_{0}} -- gęstość widmowa szumu białego.\\\\
+
 \end{frame}
 
 \begin{frame}{Model systemu transmisji FEC}
@@ -163,12 +164,10 @@ Demodulator\\|\\ \emph{odczytane słowo kodowe}\\ $\downarrow$\\ Dekoder\\|\\ \e
 ///A to nie działa tak, że można te notatki wydrukować, ale nie pokażą się na rzutniku/ekranie?}
 
 \section{Dekodowanie}
-\begin{frame}{Dekoder miękkodecyzyjny}
-Dekoder miękkodecyzyjny -- pod uwagę bierze również wiarygodność poszczególnych bitów, którą to informację dostarcza demodulator. Zysk kodowy jest zazwyczaj większy od twardodecyzyjnego o 2 dB.
-\end{frame}
-
 \begin{frame}{Dekodowanie}
-Blok odebrany traktowany jest jako prawidłowe słowo kodowe + pewien kod (syndrom, wskaźnik) błędu.
+\emph{\textbf{Dekodowanie twardodecyzyjne}} -- polega na znalezieniu prawidłowego słowa kodowego z najmniejszą odległością Hamminga od odebranego ciągu.
+
+\emph{\textbf{Dekoder miękkodecyzyjny}} -- pod uwagę bierze również wiarygodność poszczególnych bitów, którą to informację dostarcza demodulator. Zysk kodowy jest zazwyczaj większy od twardodecyzyjnego o 2 dB.
 \end{frame}
 
 
@@ -193,9 +192,9 @@ Możliwe jest rozwinięcie kodu o przeplot danych.
 Nazwa pochodzi od nazwisk autorów kodu, Hocquenghema, który skonstruował kod w roku 1959 oraz niezależnych od niego badaczy Bose i Chaudhuri z roku kolejnego.\\
 Kodowanie Bose–Chaudhuri–Hocquenghema
 Parametry:\\
-• długość wektora kodowego n = 2m – 1\\
-• liczba pozycji kontrolnych n-k ≤ mt\\
-• min. odległość Hamminga d ≥ 2t + 1\\
+• długość wektora kodowego $n=2m–1$\\
+• liczba pozycji kontrolnych $n-k ≤ mt$\\
+• min. odległość Hamminga $d≥2t+1$\\
 Kod koryguje do t błędów\\
 Kody Hamming są podzbiorem kodów BCH
 (BCH z t=1 jest kodem Hamminga)
