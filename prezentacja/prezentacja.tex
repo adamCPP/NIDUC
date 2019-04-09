@@ -76,15 +76,18 @@
 \end{frame}
 
 \begin{frame}{Wstęp}
-	\emph{\textbf{Odległość Hamminga $d_H(u, v)$}} -- liczba różnic pomiędzy odpowiadającymi sobie bitami wektorów \emph{u} i \emph{v}\\
+	\emph{\textbf{Odległość Hamminga $d_H(u, v)$}} -- liczba pozycji binarnych, na których wektory \emph{u} i \emph{v} się różnią.\\
 	\emph{\textbf{Waga wektora kodowego}} -- liczba niezerowych bitów\\
 
 	\emph{\textbf{Stosunek sygnału do szumu} (Signal to Noise Ratio, SNR)} -- stosunek mocy sygnału użytecznego do szumu, zazwyczaj wyrażany w dB.\\
-	\emph{\textbf{Zysk kodowy}} -- miara efektywności kodu korekcyjnego, obliczana jako różnica pomiędzy SNR sygnału pierwotnego do zakodowanego. Jest funkcją stopy błędów, podaje się wartość średnią bądź maksymalną.\\
-	Zdolność detekcyjna -  d-1\\
-	Zdolność korekcyjna - 
+	\emph{\textbf{Zysk kodowy}} -- miara efektywności kodu korekcyjnego, obliczana jako różnica pomiędzy SNR sygnału pierwotnego do zakodowanego. Jest funkcją stopy błędów, podaje się wartość średnią bądź maksymalną.
+\end{frame}
+
+\begin{frame}{Wstęp}
+	\emph{\textbf{Zdolność detekcyjna}} -- maksymalna liczba wykrywalnych błędów wynosi $d_{Hmin}-1$, gdzie \emph{d_Hmin} oznacza minimalną odległość Hamminga pomiędzy różnymi słowami kodowymi.\\
+	\emph{\textbf{Zdolność korekcyjna}} -- maksymalna liczba korygowalnych błędów, 
 	\begin{equation}
-\Bigl\lfloor \frac{d-1}{2} \Bigr\rfloor	
+\Bigl\lfloor \frac{d_{Hmin}-1}{2} \Bigr\rfloor	
 \end{equation}	
 
 	%równomierny - gdy wszystkie ciągi kodowe są tej samej długości
@@ -138,10 +141,7 @@ Przepustowość kanału szumu białego (\emph{Additive White Gaussian Noise, AWG
 C=B\cdot\log_2(1+\frac{S}{B \cdot N_0}) [\frac{bit}{s}],
 \end{equation}
 gdzie: \emph{B} -- szerokość pasma [Hz], \emph{S} -- moc sygnału nadawanego,
-\emph{N_0} 
--- gęstość 
-widmowa szumu 
-białego.
+\emph{N_{0}} -- gęstość widmowa szumu białego.
 \end{frame}
 
 \begin{frame}{Model systemu transmisji FEC}
@@ -232,46 +232,30 @@ d_min>=2t+1
 
 \section{Kodowanie Reeda-Salomona}
 \begin{frame}{Kodowanie Reeda-Salomona}
-
 Niebinarna wersja kodów BCH.\\
 Zastosowanie: systemy DVB-T, DVB-H, WiMAX\\
 	\begin{flushright}
-    \includegraphics[scale= 0.5][r]{image_source/ReedSolomon.jpg}
+    \includegraphics[scale= 0.5]{image_source/ReedSolomon.jpg}
     \caption{Irving S. Reed i  Gustave Solomon}
     \end{flushright}
 \end{wrapfigure}
-
-
 \end{frame}
 
 \section{Porównanie}
 \begin{frame}{Porównanie}
-Jakaś tabela porównawcza kodów korekcyjnych:
-\begin{itemize}
-		\item blokowe, czy jest przeplot
-		\item sprawność (współczynnik) kodowania k/n
-		\item możliwości detekcyjne i korekcyjne, dmin?
-		\item systematyczne czy niesystematyczne?
-		\item binarny/niebinarny???
-		\item zysk kodowy w dB???
-		\item odporność na błędy seryjne
-		\item \ldots
-\end{itemize}
+\centering
+\includegraphics[scale= 0.5]{image_source/porownanie.png}
+%\begin{itemize}
+%		\item blokowe, czy jest przeplot
+%		\item sprawność (współczynnik) kodowania k/n
+%		\item możliwości detekcyjne i korekcyjne, dmin?
+%		\item systematyczne czy niesystematyczne?
+%		\item binarny/niebinarny???
+%		\item zysk kodowy w dB???
+%		\item odporność na błędy seryjne
+%		\item \ldots
+%\end{itemize}
 		
-\end{frame}
-
-\begin{frame}
-\begin{tabular}{llll}
-&Potrajanie bitów&BCH&RS&H\\
-Cykliczność
-k
-n
-R
-Systematyczny
-Binarny
-Zysk kodowy
-
-\end{tabular}
 \end{frame}
 
 \section{Bibliografia}
