@@ -6,6 +6,7 @@
 
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{wrapfig}
 
 \definecolor{mdgray}{RGB}{100,105,100}
 
@@ -60,24 +61,32 @@
 	\emph{\textbf{Binarna stopa błędów} (Binary Error Rate, BER)}  -- stosunek 		zafałszowanych bitów do liczby bitów przesłanych\\
 	\emph{\textbf{Kodowanie korekcyjne} (Forward Error Correction, FEC)} -- 			mechanizm wykorzystywania informacji nadmiarowych do korekcji błędów 			przez dekoder. Stosowane przy systemach czasu rzeczywistego, nośnikach 		danych, utrudnionym kontakcie z nadajnikiem.\\
 	\emph{\textbf{Kod blokowy (n, k)}} -- ciąg danych dzielony jest na bloki 		\emph{k}-bitowe i każdemu takiemu blokowi przyporządkowane jest \emph{n}-			bitowe
-		słowo kodowe \\
-	\emph{\textbf{Kod liniowy}} -- suma dwóch dowolnych wektorów kodowych jest 		wektorem kodowym
+		słowo kodowe 
 \end{frame}
 
 \begin{frame}{Wstęp}
+	\emph{\textbf{Kod liniowy}} -- suma dwóch dowolnych wektorów kodowych jest 		wektorem kodowym\\
 	\emph{\textbf{Sprawność kodowania R} (Współczynnik kodowania)} -- stosunek objętości informacji do objętości jednostki kodowej, w której jest zawarta.\\
 	\begin{equation}
 	R=\frac{k}{n}
 	\end{equation}
 	\emph{\textbf{Kod splotowy (n, k, m)} (rekurencyjny)} -- przypomina 				operację splotu\\
 	\emph{\textbf{Kod systematyczny}} -- kod w którym pierwsze \emph{k} symboli bloku lub pakietu danych przedstawia niezakodowaną informację\\
-	Słowo kodowe, wektor kodowy\\
-	\emph{\textbf{Odległość Hamminga (dH(u, v))}} --\\
+	Słowo kodowe, wektor kodowy
+\end{frame}
+
+\begin{frame}{Wstęp}
+	\emph{\textbf{Odległość Hamminga $d_H(u, v)$}} -- liczba różnic pomiędzy odpowiadającymi sobie bitami wektorów \emph{u} i \emph{v}\\
 	\emph{\textbf{Waga wektora kodowego}} -- liczba niezerowych bitów\\
+
 	\emph{\textbf{Stosunek sygnału do szumu} (Signal to Noise Ratio, SNR)} -- stosunek mocy sygnału użytecznego do szumu, zazwyczaj wyrażany w dB.\\
 	\emph{\textbf{Zysk kodowy}} -- miara efektywności kodu korekcyjnego, obliczana jako różnica pomiędzy SNR sygnału pierwotnego do zakodowanego. Jest funkcją stopy błędów, podaje się wartość średnią bądź maksymalną.\\
 	Zdolność detekcyjna -  d-1\\
-	Zdolność korekcyjna - floor((d-1)/2)
+	Zdolność korekcyjna - 
+	\begin{equation}
+\Bigl\lfloor \frac{d-1}{2} \Bigr\rfloor	
+\end{equation}	
+
 	%równomierny - gdy wszystkie ciągi kodowe są tej samej długości
 	%Ciąg informacyjny -- jednoznacznie kodujący informację
 	
@@ -113,8 +122,8 @@ Stosowane są w przypadkach, kiedy prośba o powtórzenie transmisji jest proble
 \begin{itemize}
 	\item W systemach czasu rzeczywistego
 	\begin{itemize}
-		\item telewizja cyfrowa
-		\item radio cyfrowe		
+		\item[$\bullet$] telewizja cyfrowa
+		\item[$\bullet$] radio cyfrowe		
 	\end{itemize}
 	\item Składowanie danych na nośnikach - płyty CD, DVD
 	\item Komunikacja satelitarna, sondy kosmiczne
@@ -123,29 +132,32 @@ Stosowane są w przypadkach, kiedy prośba o powtórzenie transmisji jest proble
 
 \section{Twierdzenie Shannona}
 \begin{frame}{Twierdzenie Shannona}
-Przepustowość kanału
+Każdy kanał można opisać pojedyńczym parametrem -- jego przepustowością.
+Przepustowość kanału szumu białego (\emph{Additive White Gaussian Noise, AWGN}) wynosi:
 \begin{equation}
-C=B\cdot\log_2(1+\frac{S}{B \cdot N_0})
+C=B\cdot\log_2(1+\frac{S}{B \cdot N_0}) [\frac{bit}{s}],
 \end{equation}
+gdzie: \emph{B} -- szerokość pasma [Hz], \emph{S} -- moc sygnału nadawanego,
+\emph{N_0} 
+-- gęstość 
+widmowa szumu 
+białego.
 \end{frame}
 
 \begin{frame}{Model systemu transmisji FEC}
 \centering
-
 \begin{minipage}[t]{100pt}{
 \centering
-Źródło\\|\\ \emph{bity informacyjne}\\ \downarrow\\  Koder\\|\\ \emph{słowo kodowe}\\ \downarrow\\ Modulator\\|\\ \emph{nadany sygnał}\\ \downarrow\\ Kanał transmisyjny\\|\\ }
+Źródło\\|\\ \emph{bity informacyjne}\\ $\downarrow$\\  Koder\\|\\ \emph{słowo kodowe}\\ $\downarrow$\\ Modulator\\|\\ \emph{nadany sygnał}\\ $\downarrow$\\ Kanał transmisyjny\\|\\ }
 \end{minipage}
 &
 \begin{minipage}[t]{100pt}
 \centering
 |\\
-\emph{sygnał z zakłóceniami} \\\downarrow\\
-Demodulator\\|\\ \emph{odczytane słowo kodowe}\\ \downarrow\\ Dekoder\\|\\ \emph{odczytana informacja}\\ \downarrow\\ Ujście
+\emph{sygnał z zakłóceniami} \\$\downarrow$\\
+Demodulator\\|\\ \emph{odczytane słowo kodowe}\\ $\downarrow$\\ Dekoder\\|\\ \emph{odczytana informacja}\\ $\downarrow$\\ Ujście
 \end{minipage}
-
 \end{frame}
-
 
 \note{///Tak można robić notatki, które później są widoczne na komputerze, ale nie rzutniku. Trzeba tylko ogarnąć jak to się dokładnie robi.
 ///A to nie działa tak, że można te notatki wydrukować, ale nie pokażą się na rzutniku/ekranie?}
@@ -209,30 +221,27 @@ d_min>=2t+1
 
 \end{frame}
 
-\subsubsection{Kod Haminga}
-\begin{frame}{Kod Haminga}
-Przykład kodowania i dekodowania danych w kodzie Haminga
-\begin{center}
-\includegraphics[scale= 0.30]{Haming/Kodowanie_Haming.png}
-\includegraphics[scale=0.30]{Haming/Dekodowanie_Haming.png}
-\end{center}
-\end{frame}
+%\subsubsection{Kod Haminga}
+%\begin{frame}{Kod Haminga}
+%Przykład kodowania i dekodowania danych w kodzie Haminga
+%\begin{center}
+%\includegraphics[scale= 0.30]{Haming/Kodowanie_Haming.png}
+%\includegraphics[scale=0.30]{Haming/Dekodowanie_Haming.png}
+%\end{center}
+%\end{frame}
 
-	
-
-\section{Kody RS}
-\begin{frame}{Kody JAKIEŚ TAM- Opis}
-\setcounter{section}{1}
-Irving S. Reed i 
-
-\end{frame}
-
-% CZYM SĄ KODY NIEBINARNE?
-
-\subsection{Kodowanie Reeda-Salomona}
+\section{Kodowanie Reeda-Salomona}
 \begin{frame}{Kodowanie Reeda-Salomona}
+
 Niebinarna wersja kodów BCH.\\
-Zastosowanie: systemy DVB-T, DVB-H, WiMAX
+Zastosowanie: systemy DVB-T, DVB-H, WiMAX\\
+	\begin{flushright}
+    \includegraphics[scale= 0.5][r]{image_source/ReedSolomon.jpg}
+    \caption{Irving S. Reed i  Gustave Solomon}
+    \end{flushright}
+\end{wrapfigure}
+
+
 \end{frame}
 
 \section{Porównanie}
@@ -252,7 +261,7 @@ Jakaś tabela porównawcza kodów korekcyjnych:
 \end{frame}
 
 \begin{frame}
-\begin{tabular}{lccc}
+\begin{tabular}{llll}
 &Potrajanie bitów&BCH&RS&H\\
 Cykliczność
 k
