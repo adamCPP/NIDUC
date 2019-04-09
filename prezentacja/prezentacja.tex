@@ -1,7 +1,7 @@
 \documentclass[12pt]{beamer}
 
 \usepackage[utf8]{inputenc} 			%Pakiet kodowania znaków
-%\usepackage[OT4]{polski} 				%Pakiet języka polskiego
+\usepackage[OT4]{polski} 				%Pakiet języka polskiego
 \usepackage[polish]{babel}
 
 \usepackage{graphicx}
@@ -191,36 +191,23 @@ Możliwe jest rozwinięcie kodu o przeplot danych.
 
 \end{frame}
 
+
+\section{Kod Hamminga}
+\begin{frame}{Kod Haminga}
+\centering
+\includegraphics[scale= 0.5]{image_source/ham.jpg}
+\end{frame}
+
+
 \subsection{BCH}
 \begin{frame}{BCH}
 Nazwa pochodzi od nazwisk autorów kodu, Hocquenghema, który skonstruował kod w roku 1959 oraz niezależnych od niego badaczy Bose i Chaudhuri z roku kolejnego.\\
 Kodowanie Bose–Chaudhuri–Hocquenghema
-Parametry:\\
-• długość wektora kodowego $n=2m–1$\\
-• liczba pozycji kontrolnych $n-k ≤ mt$\\
-• min. odległość Hamminga $d_{Hmin}≥2t+1$\\
-Kod koryguje do t błędów\\
+
 Kody Hamming są podzbiorem kodów BCH
 (BCH z t=1 jest kodem Hamminga)
-stosowane powszechnie w praktyce;
-wielopoziomowe;
-cykliczne;
-o zmiennej długości;
-służące do korekcji błędów losowych (w przybliżeniu do 25% całkowitej liczby cyfr);
-binarne bądź używane z modulacją PSK (phase-shift keying), jednak największe znaczenie mają w praktyce kody binarne;
-mają strukturę algebraiczną;
-ich metody konstrukcji o zadanych właściwościach są stosunkowo proste i efektywne;
-konstrukcja ich koderów i dekoderów prostsza w porównaniu z innymi kodami;
 
-Kody BCH należą do kodów cyklicznych, czyli kodów wielomianowych o długości słowa kodowego \emph{n}, których wielomian generujący \emph{g(x)} (niezbędny do konstrukcji słowa kodowego) jest dzielnikiem wielomianu. Można udowodnić, że istnieje taki wielomian k(x) stopnia k, że:
-g(x)k(x)=x^n+1 lub (x^n+1)modg(x)=0.
-
-Dla m nal.do Z i t<2^{m-1} istnieje kod BCH o n = 2^m-1. Może korygować do t błędów i ma nie więcej niż mt elementów kontrolnych.
-
-Parametry:
-n=2^m-1
-k>=2t+1
-d_min>=2t+1
+Kody BCH należą do kodów cyklicznych, czyli kodów wielomianowych o długości słowa kodowego \emph{n}, których wielomian generujący \emph{g(x)} jest dzielnikiem wielomianu.
 
 \end{frame}
 
@@ -232,12 +219,6 @@ d_min>=2t+1
 %\includegraphics[scale=0.30]{Haming/Dekodowanie_Haming.png}
 %\end{center}
 %\end{frame}
-
-\section{Kod Hamminga}
-\begin{frame}
-\centering
-\includegraphics[scale= 0.5]{image_source/ham.jpg}
-\end{frame}
 
 \section{Kodowanie Reeda-Salomona}
 \begin{frame}{Kodowanie Reeda-Salomona}
@@ -269,7 +250,8 @@ Zastosowanie: systemy DVB-T, DVB-H, WiMAX\\
 
 \section{Bibliografia}
 \begin{frame}{Bibliografia}
-	
+	Teoria informacji i kodowania- Piotr Chołda, Andrzej Kamisiński
+	Wstęp do Teori Informacji i Kodowania- GrzegorzSzkibiel
 \end{frame}
 
 \section*{Pytania}
