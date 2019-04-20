@@ -1,7 +1,11 @@
 FEC- (Forward error corection) - jest techniką cyfrowego przetwarzania sygnałów mającą na celu odtworzenie pierwotnej informacji z zakłóconego sygnalu.
 Ma wyeliminować konieczność ponownego przesyłania sygnału przez kanał transmisyjny. Technika ta polega na dodawaniu dodadkowych bitów, 
 które  umożliwiają korekcję błędów.  Dodatkowe bity mogą być dodwane w różny sposób, dlatego istnieje wiele różnych rodzajów kodów FEC. 
-Są to między innymi: potrajanie bitów, kodowanie Reeda-Salomona oraz  BCH. Powyrzsze kody zostana dokładnie omówione w dalszej części prezentacji.
+Są to między innymi: potrajanie bitów, kodowanie Reeda-Salomona,CRC oraz  BCH. Powyrzsze kody zostana dokładnie omówione w dalszej części prezentacji.
+Dodawanie nadmiarowej informacji nie gwarantuje jednak poprawności transmisji. Może sie darzyć, że odebrany sygnał będzie na tyle uszkodzony, że trzeba będzie
+poprosić o jego ponowne przesłanie. W gorszym wypadku może się zdarzyć tak że przekłamanie w sygnale może być zinterpretowane jako prawidłowy sygnał.
 
-FEC używane jest w sieciach komórkowych, łączności satelitarnej i wszędzie tam gdzie 
-ponosi się wysokie koszty retreansmisji.
+FEC używane jest w sieciach komórkowych, łączności satelitarnej i wszędzie tam gdzie ponosi się wysokie koszty retreansmisji.
+
+Czym jest BER?
+BER jest jest wskaźnikiem pokaujacym liczbę błędów
