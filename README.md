@@ -27,3 +27,12 @@ PRZYDATNE LINKI
 ŻRÓDŁA
 https://www.eetimes.com/document.asp?doc_id=1275932
 
+
+
+sudo apt-get install Tkinter               # służy do wywoływania file choosera
+sudo apt-get install python3-venv          # instalacja venva ( nie trzeba instalować za każdym razem xD )
+cd NIDUC/                                  # wejście to katalogu z projektem
+python3 -m venv venv/                      # tworzy folder z venvem w katalogu z projektem 
+source venv/bin/activate                   # uruchamia venva
+
+
