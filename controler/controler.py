@@ -1,0 +1,1 @@
+''' Glowna aplikacja'''
