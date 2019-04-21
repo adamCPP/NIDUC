@@ -1,3 +1,10 @@
+import logging
+from PIL import Image
+import numpy as np
+import os
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+
 
 
 class Receiver:
@@ -5,9 +12,17 @@ class Receiver:
     
 
     def __init__(self):
-        print("Receiver created")
+        logging.basicConfig(level=logging.DEBUG)
+        logging.debug("Receiver created")
+        self.img = None
+        self.numpyImg = None
 
-    def imRead(self,path):
+    def receive(self,imageAsNumpyArray):
+        self.numpyImg = imageAsNumpyArray
 
-        self.image = Image.open(path)
+    def convertNpyArrayToImage(self):
+        self.img = Image.fromarray(self.numpyImg)
+
+    def show(self):
+        selg.img.show()
 r = Receiver()

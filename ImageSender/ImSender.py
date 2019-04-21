@@ -12,7 +12,7 @@ class Sender:
     ''' Inicjalizuje logging w trybie debug'''
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG)
-        logging.debug("Receiver created")
+        logging.debug("Sender created")
         self.img = None
         self.numpyImg = None
 
