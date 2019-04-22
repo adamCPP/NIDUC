@@ -31,17 +31,17 @@ class Sender:
     '''Konwertuje objekt Image na tablicę numpy'''
     def convertImgToNumpyArray(self):
         logging.debug("Konwersja obrazka do numpy array")
-        self.numpyImg = np.asarray( self.img, dtype="int32" )
+        self.numpyImg = np.array( self.img )
 
     '''Pokazuje obraz jaki został wczytany tzn przed zakłuceniami wprowadzonymi przez kanał transmisji'''
     def show(self):
-        logging.debug("Wysylanie obrazka")
+        logging.debug("Wyswietlenie obrazka")
         self.img.show() 
 
 
     def send(self):
         logging.debug("Wysylanie obrazka")
-        return self.numpyImg()
+        return self.numpyImg
 
         
 
