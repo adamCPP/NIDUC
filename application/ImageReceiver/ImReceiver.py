@@ -29,4 +29,4 @@ class Receiver:
     '''pokazuje obraz (nalezy go wczesniej skonwertowac metodą convertNpyArrayToImage)'''
     def show(self):
         selg.img.show()
-r = Receiver()
+

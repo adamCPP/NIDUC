@@ -20,7 +20,7 @@ class Sender:
     '''Laduje orazek z folderu  resources'''
     def loadPicture(self):
         logging.debug("Your working directory is "+os.getcwd())
-        os.chdir(r'./resources')
+        os.chdir(r'./application/resources')
         Tk().withdraw() 
         filename = askopenfilename() 
         logging.debug("You choosed  "+filename)
@@ -46,7 +46,9 @@ class Sender:
         
 
 # to nizej to sprawdenie  czy wszystko działa
+'''
 s = Sender()
 s.loadPicture()
 s.convertImgToNumpyArray()
 s.show()
+'''
