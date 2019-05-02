@@ -1,6 +1,7 @@
 '''Tutaj sender bedzie przekazywal obrazy. Nastepnie beda wykonywane na nich algorytmy a nastepnie wynik zostanie przekazany do receivera'''
 import logging
 import numpy as np
+from PIL import Image
 
 
 class Channel:
@@ -36,5 +37,11 @@ class Channel:
         gauss = gauss.reshape(row,col,ch)
         noisy = self.numpyImg + gauss
         self.noisyImage =  noisy.astype('uint8')
+
+    def show(self):
+        logging.debug("Konwersja zaszlumionego obrazu do typu Image")
+        image = Image.fromarray(self.noisyImage)
+        logging.debug("Wyswietlenie obrazu w channelu")
+        image.show()
     
 

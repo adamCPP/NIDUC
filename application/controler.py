@@ -20,6 +20,10 @@ c.receiveImage(s.send())
 #zauszumienie
 c.addNoise()
 
+#wyświetlenie zaszuumionego obazu
+
+c.show()
+
 #oderanie obrazka z kanału
 r.receive(c.takeImage())
 
