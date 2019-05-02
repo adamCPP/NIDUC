@@ -17,6 +17,9 @@ s.show()
 # wysłanie obrazka do kanał
 c.receiveImage(s.send())
 
+#zauszumienie
+c.addNoise()
+
 #oderanie obrazka z kanału
 r.receive(c.takeImage())
 

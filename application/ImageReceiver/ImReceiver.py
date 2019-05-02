@@ -26,6 +26,7 @@ class Receiver:
     ''' koweruje numpy array do typu Image zeby mozna bylo wyswietlac'''
     def convertNpyArrayToImage(self):
         logging.debug("Konwersja npyArray do Image w Receiverze")
+        logging.debug(self.numpyImg.shape)
         self.img = Image.fromarray(self.numpyImg)
 
     '''pokazuje obraz (nalezy go wczesniej skonwertowac metodą convertNpyArrayToImage)'''
