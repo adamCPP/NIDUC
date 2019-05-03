@@ -4,6 +4,7 @@ import logging
 import os
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+import unireedsolomon as rs
 
 
 class Sender:
@@ -44,6 +45,12 @@ class Sender:
     def send(self):
         logging.debug("Wysylanie obrazka")
         return self.numpyImg
+
+    def reedSolomonEncode(self): #TO DO
+        logging.debug("Kodowanie reeda solomona")
+        coder = rs.RSCoder(255,223)
+       # self.numpyImg = coder.encode(self.numpyImg)
+        
 
         
 

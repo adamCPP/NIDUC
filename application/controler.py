@@ -13,6 +13,8 @@ c = Channel()
 s.loadPicture()
 s.convertImgToNumpyArray()
 s.show()
+#kodowanie reeda solomona
+s.reedSolomonEncode()
 
 # wysłanie obrazka do kanał
 c.receiveImage(s.send())
