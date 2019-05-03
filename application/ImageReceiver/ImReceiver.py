@@ -4,6 +4,7 @@ import numpy as np
 import os
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+import unireedsolomon as rs
 
 
 
@@ -34,3 +35,7 @@ class Receiver:
         logging.debug("Wyświetlenie obrazu w receiverze")
         self.img.show()
 
+    def reedSolomonDecode(self):
+        logging.debug("Dekodowanie Reeda Solomona")
+        coder = rs.RSCoder(255,223)
+        self.numpyImg  = coder.decode(self.numpyImg)
