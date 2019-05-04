@@ -5,7 +5,9 @@ import os
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import unireedsolomon as rs
-
+import bchlib
+import hashlib
+import random
 
 
 class Receiver:
