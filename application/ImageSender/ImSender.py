@@ -17,6 +17,7 @@ class Sender:
         logging.debug("Sender created")
         self.img = None
         self.numpyImg = None
+        self.numpyFlatImg = None
 
 
     '''Laduje orazek z folderu  resources'''
@@ -45,8 +46,21 @@ class Sender:
 
     def send(self):
         logging.debug("Wysylanie obrazka")
-
+        
+        self.BCHEncode()
         return self.numpyImg
+
+    def floatArray(self):
+        logging.debug("Prostowanie tablicy")
+        firstD= len(self.numpyImg)
+        secondD= len(self.numpyImg[0]) 
+        thirdD= len(self.numpyImg[0][0])
+        self.numpyFlatImg=np.zeros(5)
+        self.numpyFlatImg+=firstD
+        self.numpyFlatImg+=secondD
+        self.numpyFlatImg+=thirdD
+        np.concatenate((self.numpyFlatImg, self.numpyImg.flatten()), axis=0)
+        #self.numpyFlatImg+=self.numpyImg.flatten()
 
     def reedSolomonEncode(self): #TO DO
         logging.debug("Kodowanie reeda solomona")
@@ -55,17 +69,15 @@ class Sender:
 	
     def BCHEncode(self): #TO DO
         logging.debug("Kodowanie BCH")
+        self.floatArray()
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 17
         self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
-
-        # random data
-        self.data = self.numpyImg
-
+        self.data = self.numpyFlatImg
         # encode and make a "packet"
         self.ecc = self.bch.encode(self.data)
-        self.packet = self.data + self.ecc
-        self.numpyImg=self.packet
+        self.packet = np.concatenate((self.data, self.ecc), axis=0)
+        self.numpyFlatImg=self.packet
 
         
 
