@@ -13,18 +13,30 @@ c = Channel()
 s.loadPicture()
 s.convertImgToNumpyArray()
 s.show()
+
+#Tworzenie tablicy 1D
+s.floatArray()
+
 #kodowanie reeda solomona
 s.reedSolomonEncode()
 
+#kodowanie BCH
+#s.BCHEncode()
+
 # wysłanie obrazka do kanał
 c.receiveImage(s.send())
+
+#Przywracanie wymiarów
+c.ReShape()
 
 #zauszumienie
 c.addNoise()
 
 #wyświetlenie zaszuumionego obazu
-
 c.show()
+
+#Tworzenie tablicy 1D
+c.floatArray()
 
 #oderanie obrazka z kanału
 r.receive(c.takeImage())

@@ -11,6 +11,7 @@ class Channel:
         logging.basicConfig(level=logging.DEBUG)
         logging.debug("Channel created")
         self.numpyImg = None
+        self.numpyFlatImg = None
         self.noisyImage = None
 
 
@@ -20,14 +21,30 @@ class Channel:
         return self.noisyImage
 
     ''' Pobiera obraz z sendera'''
-    def receiveImage(self,npyImage):
+    def receiveImage(self,npyFlatImage):
         logging.debug("Odebranie obrazka przez channel")
-        self.numpyImg=npyImage
+        self.numpyFlatImg=npyFlatImage
+     
+    ''' Przywracanie kształtów'''   
+    def ReShape(self):
+        logging.debug("Przywracanie kształtów przez channel")
+        firstDir= self.numpyFlatImg[0]
+        secondDir= self.numpyFlatImg[1]
+        thirdDir= self.numpyFlatImg[2]
+        size=firstDir*secondDir*thirdDir
+        
+        self.numpyImg=([self.numpyFlatImg[3:size+3]])
+        self.numpyImg=np.array(self.numpyImg)
+        self.numpyImg=self.numpyImg.transpose()
+        
+        #przywracanie nie działa
+        print(self.numpyImg.shape)
+        self.numpyImg.reshape((firstDir, secondDir, thirdDir))
+        print(self.numpyImg.shape)
 
-
-    '''Dodaje załucenia do obrazu który znajduje się w kanale'''
+    '''Dodaje załócenia do obrazu który znajduje się w kanale'''
     def addNoise(self):
-        logging.debug("Dudawanie zakłuceń")
+        logging.debug("Dudawanie zakłóceń")
         row,col,ch= self.numpyImg.shape
         mean = 0.0
         var = 0.9
@@ -43,5 +60,16 @@ class Channel:
         image = Image.fromarray(self.noisyImage)
         logging.debug("Wyswietlenie obrazu w channelu")
         image.show()
+
+    def floatArray(self):
+        logging.debug("Prostowanie tablicy")
+        firstDir= len(self.numpyImg)
+        secondDir= len(self.numpyImg[0]) 
+        thirdDir= len(self.numpyImg[0][0])
+        self.numpyFlatImg=np.zeros(0)
+        self.numpyFlatImg+=firstDir
+        self.numpyFlatImg+=secondDir
+        self.numpyFlatImg+=thirdDir
+        np.concatenate((self.numpyFlatImg, self.numpyImg.flatten()), axis=0)
     
 
