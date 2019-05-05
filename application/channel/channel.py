@@ -39,7 +39,11 @@ class Channel:
         
         #przywracanie nie działa
         print(self.numpyImg.shape)
-        self.numpyImg.reshape((firstDir, secondDir, thirdDir))
+
+        self.numpyImg= np.squeeze(self.numpyImg, axis=1)
+        print(self.numpyImg.shape)
+
+        self.numpyImg=np.reshape(self.numpyImg, (firstDir, secondDir, thirdDir))
         print(self.numpyImg.shape)
 
     '''Dodaje załócenia do obrazu który znajduje się w kanale'''
