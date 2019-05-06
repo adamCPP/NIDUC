@@ -34,17 +34,11 @@ class Channel:
         size=firstDir*secondDir*thirdDir
         
         self.numpyImg=([self.numpyFlatImg[3:size+3]])
+        self.contrSum=([self.numpyFlatImg[size+3:]])
         self.numpyImg=np.array(self.numpyImg)
         self.numpyImg=self.numpyImg.transpose()
-        
-        #przywracanie nie działa
-        print(self.numpyImg.shape)
-
         self.numpyImg= np.squeeze(self.numpyImg, axis=1)
-        print(self.numpyImg.shape)
-
         self.numpyImg=np.reshape(self.numpyImg, (firstDir, secondDir, thirdDir))
-        print(self.numpyImg.shape)
 
     '''Dodaje załócenia do obrazu który znajduje się w kanale'''
     def addNoise(self):
@@ -65,15 +59,13 @@ class Channel:
         logging.debug("Wyswietlenie obrazu w channelu")
         image.show()
 
-    def floatArray(self):
-        logging.debug("Prostowanie tablicy")
-        firstDir= len(self.numpyImg)
-        secondDir= len(self.numpyImg[0]) 
-        thirdDir= len(self.numpyImg[0][0])
-        self.numpyFlatImg=np.zeros(0)
-        self.numpyFlatImg+=firstDir
-        self.numpyFlatImg+=secondDir
-        self.numpyFlatImg+=thirdDir
-        np.concatenate((self.numpyFlatImg, self.numpyImg.flatten()), axis=0)
+    def flatArray(self):
+        logging.debug("Prostowanie tablicy chanel")
+        firstDir= len(self.noisyImage)
+        secondDir= len(self.noisyImage[0]) 
+        thirdDir= len(self.noisyImage[0][0])
+        self.numpyFlatImg=np.array([firstDir, secondDir, thirdDir])
+        self.noisyImage= np.concatenate((self.noisyImage, self.noisyImage.flatten()), axis=None)
+        self.noisyImage= np.concatenate((self.noisyImage, self.contrSum), axis=None)
     
 

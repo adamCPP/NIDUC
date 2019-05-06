@@ -48,7 +48,7 @@ class Sender:
         logging.debug("Wysylanie obrazka")
         return self.numpyFlatImg
 
-    def floatArray(self):
+    def flatArray(self):
         logging.debug("Prostowanie tablicy")
         firstDir= len(self.numpyImg)
         secondDir= len(self.numpyImg[0]) 
