@@ -67,10 +67,10 @@ class Sender:
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 17
         self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
-        self.data = self.numpyFlatImg
+        #self.data = bytearray(self.numpyFlatImg)
         # encode and make a "packet"
-        self.ecc = self.bch.encode(self.data)
-        self.packet= np.concatenate((self.data, self.ecc), axis= None)
+        self.ecc = self.bch.encode(self.numpyFlatImg)
+        self.packet= np.concatenate((self.numpyFlatImg, self.ecc), axis= None)
         self.numpyFlatImg=self.packet
 
         

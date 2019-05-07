@@ -44,8 +44,8 @@ r.receive(c.takeImage())
 #prostowanie tablicy
 r.BCHDecode()
 
-
+r.ReShape()
 # konwersja npyArray to obrazu i wyświetlenie go
-r.ReShape() 
+
 r.convertNpyArrayToImage()
 r.show()

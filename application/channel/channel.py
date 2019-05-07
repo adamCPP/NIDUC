@@ -19,6 +19,7 @@ class Channel:
     def takeImage(self):
         logging.debug("Przekazanie obrazka przez channel")
         return self.noisyImage
+        #return  self.numpyFlatImg
 
     ''' Pobiera obraz z sendera'''
     def receiveImage(self,npyFlatImage):

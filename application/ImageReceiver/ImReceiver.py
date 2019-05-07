@@ -48,12 +48,17 @@ class Receiver:
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 17
         self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
+        #print(len(self.numpyFlatImg))
+        #self.numpyFlatImg= bytearray(self.numpyFlatImg)
         self.numpyFlatImg, self.ecc = self.numpyFlatImg[3:-self.bch.ecc_bytes], self.numpyFlatImg[-self.bch.ecc_bytes:]
-        print(self.numpyFlatImg.shape)
-        self.ecc= bytearray(self.ecc)
-        self.ecc= self.ecc[::8]
 
-        self.bch.decode_inplace(self.numpyFlatImg, self.ecc)
+        #self.ecc= bytearray(self.ecc)
+        #self.ecc= self.ecc[::8]
+
+        
+        #self.numpyFlatImg= bytearray(self.numpyFlatImg)
+
+        self.bch.decode(self.numpyFlatImg, self.ecc)
         
 
     ''' Przywracanie kształtów'''   
