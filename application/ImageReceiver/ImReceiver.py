@@ -38,4 +38,5 @@ class Receiver:
     def reedSolomonDecode(self):
         logging.debug("Dekodowanie Reeda Solomona")
         coder = rs.RSCoder(255,223)
-        self.numpyImg  = coder.decode(self.numpyImg)
+
+        

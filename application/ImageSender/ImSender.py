@@ -50,6 +50,9 @@ class Sender:
         logging.debug("Kodowanie reeda solomona")
         coder = rs.RSCoder(255,223)
        # self.numpyImg = coder.encode(self.numpyImg)
+        k = 223
+        imgChunks = np.array_split(self.numpyImg, range(k, self.numpyImg.shape[0], k))
+        encodedChunks = [coder.encode(chunk) for chunk in imgChunks]
         
 
         
