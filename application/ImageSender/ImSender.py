@@ -5,7 +5,8 @@ import os
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import unireedsolomon as rs
-
+import bchlib
+import random
 
 class Sender:
 
@@ -16,6 +17,7 @@ class Sender:
         logging.debug("Sender created")
         self.img = None
         self.numpyImg = None
+        self.numpyFlatImg = None
 
 
     '''Laduje orazek z folderu  resources'''
@@ -34,9 +36,9 @@ class Sender:
         logging.debug("Konwersja obrazka do numpy array")
         self.numpyImg = np.array(self.img)
 
+	
 
-
-    '''Pokazuje obraz jaki został wczytany tzn przed zakłuceniami wprowadzonymi przez kanał transmisji'''
+    '''Pokazuje obraz jaki został wczytany tzn przed zakłóceniami wprowadzonymi przez kanał transmisji'''
     def show(self):
         logging.debug("Wyswietlenie obrazka")
         self.img.show() 
@@ -44,16 +46,36 @@ class Sender:
 
     def send(self):
         logging.debug("Wysylanie obrazka")
-        return self.numpyImg
+        return self.numpyFlatImg
+
+    def flatArray(self):
+        logging.debug("Prostowanie tablicy")
+        firstDir= len(self.numpyImg)
+        secondDir= len(self.numpyImg[0]) 
+        thirdDir= len(self.numpyImg[0][0])
+        self.numpyFlatImg=np.array([firstDir, secondDir, thirdDir])
+        self.numpyFlatImg= np.concatenate((self.numpyFlatImg, self.numpyImg.flatten()), axis= None)
+        
 
     def reedSolomonEncode(self): #TO DO
         logging.debug("Kodowanie reeda solomona")
         coder = rs.RSCoder(255,223)
        # self.numpyImg = coder.encode(self.numpyImg)
         k = 223
-        imgChunks = np.array_split(self.numpyImg, range(k, self.numpyImg.shape[0], k))
-        encodedChunks = [coder.encode(chunk) for chunk in imgChunks]
-        
+        self.ecc = coder.encode(self.numpyFlatImg)
+        self.packet= np.concatenate((self.numpyFlatImg, self.ecc), axis= None)
+        self.numpyFlatImg=self.packet
+	
+    def BCHEncode(self): #TO DO
+        logging.debug("Kodowanie BCH")
+        self.BCH_POLYNOMIAL = 8219
+        self.BCH_BITS = 17
+        self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
+        #self.data = bytearray(self.numpyFlatImg)
+        # encode and make a "packet"
+        self.ecc = self.bch.encode(self.numpyFlatImg)
+        self.packet= np.concatenate((self.numpyFlatImg, self.ecc), axis= None)
+        self.numpyFlatImg=self.packet
 
         
 
