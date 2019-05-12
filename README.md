@@ -1,13 +1,20 @@
 Projekt NIDUC
 
 TODO:
-- zrobic prezentacje
+- uogólnić Hamminga
+- dodać błędy grupowe
+- sender ma dostarczać spłaszczoną tablicę (byte array?)
+- GUI
+- obraz z różnicą
+- potrajanie bitów
+- testy
 
 CODING_STANDARDS:
--camelCase
--nazwy klas zaczynamy z wielkiej litery
--nazwy stalych pisane w całości wielkimi literami
--każda klasa w osobnym pliku 
+- gitlogi w języku angielskim
+- nazwy klas zaczynamy z wielkiej litery, CamelCase
+- nazwy stalych pisane w całości wielkimi literami
+- pozostałe nazwy (w tym nazwy plików .py i pakietów) z małej litery, z podkreślnikami
+- każda klasa w osobnym pliku
 
 
 TERMINY:
