@@ -7,5 +7,6 @@
 *.snm
 *.dvi
 *.pdf
+.idea
 venv/
 __pycache__/
