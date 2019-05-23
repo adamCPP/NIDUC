@@ -21,7 +21,7 @@ s.flatArray()
 s.reedSolomonEncode()
 
 #kodowanie BCH
-s.BCHEncode()
+#s.BCHEncode()
 
 # wysłanie obrazka do kanał
 c.receiveImage(s.send())
@@ -42,7 +42,7 @@ c.flatArray()
 r.receive(c.takeImage())
 
 #prostowanie tablicy
-r.BCHDecode()
+#r.BCHDecode()
 
 r.ReShape()
 # konwersja npyArray to obrazu i wyświetlenie go

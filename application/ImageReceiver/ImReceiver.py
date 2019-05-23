@@ -23,28 +23,28 @@ class Receiver:
 
     '''zapisuje otrzymany obraz w postaci numpy array'''
     def receive(self,imageAsNumpyArray):
-        logging.debug("Otrzmano obraz w Receiverze")
+        logging.debug("Receiver: Otrzmano obraz w Receiverze")
         self.numpyFlatImg = imageAsNumpyArray
 
 
     ''' koweruje numpy array do typu Image zeby mozna bylo wyswietlac'''
     def convertNpyArrayToImage(self):
-        logging.debug("Konwersja npyArray do Image w Receiverze")
+        logging.debug("Receiver: Konwersja npyArray do Image w Receiverze")
         logging.debug(self.numpyImg.shape)
         self.img = Image.fromarray(self.numpyImg)
 
     '''pokazuje obraz (nalezy go wczesniej skonwertowac metodą convertNpyArrayToImage)'''
     def show(self):
-        logging.debug("Wyświetlenie obrazu w receiverze")
+        logging.debug("Receiver: Wyświetlenie obrazu ")
         self.img.show()
 
     def reedSolomonDecode(self):
-        logging.debug("Dekodowanie Reeda Solomona")
+        logging.debug("Receiver: Dekodowanie Reeda Solomona")
         coder = rs.RSCoder(255,223)
         self.numpyImg  = coder.decode(self.numpyImg)
 
     def BCHDecode(self): #TO DO
-        logging.debug("Dekodowanie BCH")
+        logging.debug("Receiver: Dekodowanie BCH")
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 17
         self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
@@ -63,7 +63,7 @@ class Receiver:
 
     ''' Przywracanie kształtów'''   
     def ReShape(self):
-        logging.debug("Przywracanie kształtów przez receiver")
+        logging.debug("Receiver: Przywracanie kształtów ")
         firstDir= self.numpyFlatImg[0]
         secondDir= self.numpyFlatImg[1]
         thirdDir= self.numpyFlatImg[2]
@@ -75,7 +75,7 @@ class Receiver:
         self.numpyImg= np.squeeze(self.numpyImg, axis=1)
 
     def flatArray(self):
-        logging.debug("Prostowanie tablicy receiver")
+        logging.debug("Receiver: Prostowanie tablicy")
         firstDir= len(self.numpyImg)
         secondDir= len(self.numpyImg[0]) 
         thirdDir= len(self.numpyImg[0][0])

@@ -17,18 +17,18 @@ class Channel:
 
     ''' Przekazuje obraz  receivera'''
     def takeImage(self):
-        logging.debug("Przekazanie obrazka przez channel")
+        logging.debug("Channel: Przekazanie obrazka")
         return self.noisyImage
         #return  self.numpyFlatImg
 
     ''' Pobiera obraz z sendera'''
     def receiveImage(self,npyFlatImage):
-        logging.debug("Odebranie obrazka przez channel")
+        logging.debug("Channel: Odebranie obrazka")
         self.numpyFlatImg=npyFlatImage
      
     ''' Przywracanie kształtów'''   
     def ReShape(self):
-        logging.debug("Przywracanie kształtów przez channel")
+        logging.debug("Channel: Przywracanie kształtów")
         firstDir= self.numpyFlatImg[0]
         secondDir= self.numpyFlatImg[1]
         thirdDir= self.numpyFlatImg[2]
@@ -43,7 +43,7 @@ class Channel:
 
     '''Dodaje załócenia do obrazu który znajduje się w kanale'''
     def addNoise(self):
-        logging.debug("Dudawanie zakłóceń")
+        logging.debug("Channel: Dodawanie zakłóceń")
         row,col,ch= self.numpyImg.shape
         mean = 0.0
         var = 0.9
@@ -55,13 +55,13 @@ class Channel:
         self.noisyImage =  noisy.astype('uint8')
 
     def show(self):
-        logging.debug("Konwersja zaszlumionego obrazu do typu Image")
+        logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")
         image = Image.fromarray(self.noisyImage)
-        logging.debug("Wyswietlenie obrazu w channelu")
+        logging.debug("Channel: Wyswietlenie obrazu")
         image.show()
 
     def flatArray(self):
-        logging.debug("Prostowanie tablicy chanel")
+        logging.debug("Channel: Prostowanie tablicy ")
         firstDir= len(self.noisyImage)
         secondDir= len(self.noisyImage[0]) 
         thirdDir= len(self.noisyImage[0][0])

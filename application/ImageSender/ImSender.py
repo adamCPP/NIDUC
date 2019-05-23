@@ -22,34 +22,34 @@ class Sender:
 
     '''Laduje orazek z folderu  resources'''
     def loadPicture(self):
-        logging.debug("Your working directory is "+os.getcwd())
+        logging.debug("Sender: Your working directory is "+os.getcwd())
         os.chdir(r'./application/resources')
         Tk().withdraw() 
         filename = askopenfilename() 
-        logging.debug("You choosed  "+filename)
+        logging.debug("Sender: You choosed  "+filename)
 
         self.img = Image.open(filename)
         self.img.load()
 
     '''Konwertuje objekt Image na tablicę numpy'''
     def convertImgToNumpyArray(self):
-        logging.debug("Konwersja obrazka do numpy array")
+        logging.debug("Sender: Konwersja obrazka do numpy array")
         self.numpyImg = np.array(self.img)
 
 	
 
     '''Pokazuje obraz jaki został wczytany tzn przed zakłóceniami wprowadzonymi przez kanał transmisji'''
     def show(self):
-        logging.debug("Wyswietlenie obrazka")
+        logging.debug("Sender: Wyswietlenie obrazka")
         self.img.show() 
 
 
     def send(self):
-        logging.debug("Wysylanie obrazka")
+        logging.debug("Sender: Wysylanie obrazka")
         return self.numpyFlatImg
 
     def flatArray(self):
-        logging.debug("Prostowanie tablicy")
+        logging.debug("Sender: Prostowanie tablicy")
         firstDir= len(self.numpyImg)
         secondDir= len(self.numpyImg[0]) 
         thirdDir= len(self.numpyImg[0][0])
@@ -58,16 +58,16 @@ class Sender:
         
 
     def reedSolomonEncode(self): #TO DO
-        logging.debug("Kodowanie reeda solomona")
+        logging.debug("Sender: Kodowanie reeda solomona")
         coder = rs.RSCoder(255,223)
        # self.numpyImg = coder.encode(self.numpyImg)
         k = 223
-        self.ecc = coder.encode(self.numpyFlatImg)
-        self.packet= np.concatenate((self.numpyFlatImg, self.ecc), axis= None)
-        self.numpyFlatImg=self.packet
+        #self.ecc = coder.encode(self.numpyFlatImg)
+        #self.packet= np.concatenate((self.numpyFlatImg, self.ecc), axis= None)
+        #self.numpyFlatImg=self.packet
 	
     def BCHEncode(self): #TO DO
-        logging.debug("Kodowanie BCH")
+        logging.debug("Sender: Kodowanie BCH")
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 17
         self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
