@@ -30,7 +30,11 @@ c.add_noise2()
 
 
 #oderanie obrazka z kanału
-r.receive(c.take_image())
+r.receive_img_as_np_array(c.take_image())
+
+r.reed_solomon_decode()
+
+r.reshape()
 
 #prostowanie tablicy
 #r.BCHDecode()

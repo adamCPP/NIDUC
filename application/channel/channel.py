@@ -64,11 +64,10 @@ class Channel:
         print(self.numpy_flat_img)
         iter = 0
         for val in self.numpy_flat_img:
-            if gauss[iter]>0.95:
-                str = list(val)
-                str[1]='a'
-                val = str
+            if (gauss[iter]>0.95 and val.isdigit()):
+                val='a'
             iter=iter+1
+        self.noisy_image = self.numpy_flat_img
 
     def show(self):
         logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")

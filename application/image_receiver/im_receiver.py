@@ -22,7 +22,7 @@ class Receiver:
         self.bytearray_img = None
 
     """Zapisuje otrzymany obraz w postaci numpy array"""
-    def receive(self, imageAsNumpyArray):
+    def receive_img_as_np_array(self, imageAsNumpyArray):
         logging.debug("Receiver: Otrzmano obraz w Receiverze")
         self.numpy_flat_img = imageAsNumpyArray
 
@@ -51,7 +51,21 @@ class Receiver:
     def reed_solomon_decode(self):
         logging.debug("Receiver: Dekodowanie Reeda Solomona")
         coder = rs.RSCoder(255, 223)
-        self.numpy_img  = coder.decode(self.numpy_img)
+        input = self.numpy_flat_img
+
+        output = []
+        logging.debug("Receiver: Input")
+        logging.debug(input)
+        for data in input:
+           # print("Data: ")
+            #print(data)
+            output.append(coder.decode(data)[0])
+            #print("Encoded Data: ")
+            #print(coder.decode(data))
+
+        self.numpy_flat_img = np.array(output)
+        print(self.numpy_flat_img)
+
 
     def bch_decode(self): #TO DO
         logging.debug("Receiver: Dekodowanie BCH")

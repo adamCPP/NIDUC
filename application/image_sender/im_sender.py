@@ -7,6 +7,8 @@ from tkinter.filedialog import askopenfilename
 import unireedsolomon as rs
 import bchlib
 import random
+import math
+import textwrap
 
 
 class Sender:
@@ -61,19 +63,36 @@ class Sender:
     def reed_solomon_encode(self): 
 
         logging.debug("Sender: Kodowanie reeda solomona")
-
+        self.numpy_flat_img = np.array(self.numpy_flat_img[0:1000])
         coder = rs.RSCoder(255,223)
         output = []
+        logging.debug("Sender: Numpy flat image")
+        logging.debug(self.numpy_flat_img)
+        logging.debug(self.numpy_flat_img.shape)
     
-        blocks = np.array_split(self.numpy_flat_img,len(self.numpy_flat_img)/222)
+        print("Dlugosc stringa"+str(len(self.numpy_flat_img)))
+        s=""
+        s =  s + str(self.numpy_flat_img[0])
+        for i in range(1,self.numpy_flat_img.shape[0]):
+            s=s+" "+str(self.numpy_flat_img[i])
+
+
+        self.numpy_flat_img = s
+
+        logging.debug("Sender: Numpy string")
         print(self.numpy_flat_img)
+        
+        blocks = textwrap.wrap(self.numpy_flat_img,223)
         for block in blocks:
             code = coder.encode(block)
+            logging.debug("block")
+            logging.debug(block)
             output.append(code)
         self.numpy_flat_img=np.array(output)
-        print(self.numpy_flat_img)
         logging.debug("Sender: output shape")
         logging.debug(self.numpy_flat_img.shape)
+        logging.debug("Sender: output ")
+        logging.debug(self.numpy_flat_img[0])
 	
     def BCH_encode(self): #TO DO
         logging.debug("Sender: Kodowanie BCH")
