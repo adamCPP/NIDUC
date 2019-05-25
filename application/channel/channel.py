@@ -54,6 +54,23 @@ class Channel:
         noisy = self.numpyImg + gauss
         self.noisyImage =  noisy.astype('uint8')
 
+    def addNoise2(self):
+        logging.debug("Channel: Dodawanie zakłóceń do salomona")
+        mean = 0.0
+        var = 0.9
+        sigma = var**0.5
+        gauss = np.array(self.numpyFlatImg.shape)
+        gauss = np.random.normal(mean,sigma,self.numpyFlatImg.shape)
+        print(gauss)
+        print(self.numpyFlatImg)
+        iter = 0
+        for val in self.numpyFlatImg:
+            if gauss[iter]>0.95:
+                str = list(val)
+                str[1]='a'
+                val = str
+            iter=iter+1
+
     def show(self):
         logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")
         image = Image.fromarray(self.noisyImage)

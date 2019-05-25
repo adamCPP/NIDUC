@@ -57,14 +57,21 @@ class Sender:
         self.numpyFlatImg= np.concatenate((self.numpyFlatImg, self.numpyImg.flatten()), axis= None)
         
 
-    def reedSolomonEncode(self): #TO DO
+    def reedSolomonEncode(self): 
         logging.debug("Sender: Kodowanie reeda solomona")
+
         coder = rs.RSCoder(255,223)
-       # self.numpyImg = coder.encode(self.numpyImg)
-        k = 223
-        #self.ecc = coder.encode(self.numpyFlatImg)
-        #self.packet= np.concatenate((self.numpyFlatImg, self.ecc), axis= None)
-        #self.numpyFlatImg=self.packet
+        output = []
+    
+        blocks = np.array_split(self.numpyFlatImg,len(self.numpyFlatImg)/222)
+        print(self.numpyFlatImg)
+        for block in blocks:
+            code = coder.encode(block)
+            output.append(code)
+        self.numpyFlatImg=np.array(output)
+        print(self.numpyFlatImg)
+        logging.debug("Sender: output shape")
+        logging.debug(self.numpyFlatImg.shape)
 	
     def BCHEncode(self): #TO DO
         logging.debug("Sender: Kodowanie BCH")
