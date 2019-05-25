@@ -1,4 +1,4 @@
-'''Tutaj sender bedzie przekazywal obrazy. Nastepnie beda wykonywane na nich algorytmy a nastepnie wynik zostanie przekazany do receivera'''
+"""Tutaj sender bedzie przekazywal obrazy. Nastepnie beda wykonywane na nich algorytmy a nastepnie wynik zostanie przekazany do receivera"""
 import logging
 import numpy as np
 from PIL import Image
@@ -6,65 +6,64 @@ from PIL import Image
 
 class Channel:
 
-    '''Inicjaliuje debug'''
+    """Inicjaliuje debug"""
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG)
         logging.debug("Channel created")
-        self.numpyImg = None
-        self.numpyFlatImg = None
-        self.noisyImage = None
+        self.numpy_img = None
+        self.numpy_flat_img = None
+        self.noisy_image = None
 
-
-    ''' Przekazuje obraz  receivera'''
-    def takeImage(self):
+    """Przekazuje obraz do receivera"""
+    def take_image(self):
         logging.debug("Channel: Przekazanie obrazka")
-        return self.noisyImage
+        return self.noisy_image
         #return  self.numpyFlatImg
 
-    ''' Pobiera obraz z sendera'''
-    def receiveImage(self,npyFlatImage):
+    """Pobiera obraz z sendera"""
+    def receive_image(self, npyFlatImage):
         logging.debug("Channel: Odebranie obrazka")
-        self.numpyFlatImg=npyFlatImage
+        self.numpy_flat_img=npyFlatImage
      
-    ''' Przywracanie kształtów'''   
-    def ReShape(self):
+    """Przywracanie kształtów"""
+    def reshape(self):
         logging.debug("Channel: Przywracanie kształtów")
-        firstDir= self.numpyFlatImg[0]
-        secondDir= self.numpyFlatImg[1]
-        thirdDir= self.numpyFlatImg[2]
-        size=firstDir*secondDir*thirdDir
+        first_dim = self.numpy_flat_img[0]
+        second_dim = self.numpy_flat_img[1]
+        third_dim = self.numpy_flat_img[2]
+        size = first_dim * second_dim * third_dim
         
-        self.numpyImg=([self.numpyFlatImg[3:size+3]])
-        self.contrSum=([self.numpyFlatImg[size+3:]])
-        self.numpyImg=np.array(self.numpyImg)
-        self.numpyImg=self.numpyImg.transpose()
-        self.numpyImg= np.squeeze(self.numpyImg, axis=1)
-        self.numpyImg=np.reshape(self.numpyImg, (firstDir, secondDir, thirdDir))
+        self.numpy_img = ([self.numpy_flat_img[3:size + 3]])
+        self.contr_sum = ([self.numpy_flat_img[size + 3:]])
+        self.numpy_img = np.array(self.numpy_img)
+        self.numpy_img = self.numpy_img.transpose()
+        self.numpy_img = np.squeeze(self.numpy_img, axis=1)
+        self.numpy_img = np.reshape(self.numpy_img, (first_dim, second_dim, third_dim))
 
-    '''Dodaje załócenia do obrazu który znajduje się w kanale'''
-    def addNoise(self):
+    """Dodaje załócenia do obrazu który znajduje się w kanale"""
+    def add_noise(self):
         logging.debug("Channel: Dodawanie zakłóceń")
-        row,col,ch= self.numpyImg.shape
+        row, col, ch = self.numpy_img.shape
         mean = 0.0
         var = 0.9
         sigma = var**0.5
-        gauss = np.array(self.numpyImg.shape)
+        gauss = np.array(self.numpy_img.shape)
         gauss = np.random.normal(mean,sigma,(row,col,ch))
         gauss = gauss.reshape(row,col,ch)
-        noisy = self.numpyImg + gauss
-        self.noisyImage =  noisy.astype('uint8')
+        noisy = self.numpy_img + gauss
+        self.noisy_image = noisy.astype('uint8')
 
     def addNoise2(self):
         logging.debug("Channel: Dodawanie zakłóceń do salomona")
         mean = 0.0
         var = 0.9
         sigma = var**0.5
-        gauss = np.array(self.numpyFlatImg.shape)
-        gauss = np.random.normal(mean,sigma,self.numpyFlatImg.shape)
+        gauss = np.array(self.numpy_flat_img.shape)
+        gauss = np.random.normal(mean,sigma,self.numpy_flat_img.shape)
         print(gauss)
-        print(self.numpyFlatImg)
+        print(self.numpy_flat_img)
         iter = 0
-        for val in self.numpyFlatImg:
+        for val in self.numpy_flat_img:
             if gauss[iter]>0.95:
                 str = list(val)
                 str[1]='a'
@@ -73,17 +72,17 @@ class Channel:
 
     def show(self):
         logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")
-        image = Image.fromarray(self.noisyImage)
+        image = Image.fromarray(self.noisy_image)
         logging.debug("Channel: Wyswietlenie obrazu")
         image.show()
 
-    def flatArray(self):
+    def flat_array(self):
         logging.debug("Channel: Prostowanie tablicy ")
-        firstDir= len(self.noisyImage)
-        secondDir= len(self.noisyImage[0]) 
-        thirdDir= len(self.noisyImage[0][0])
-        self.numpyFlatImg=np.array([firstDir, secondDir, thirdDir])
-        self.noisyImage= np.concatenate((self.noisyImage, self.noisyImage.flatten()), axis=None)
-        self.noisyImage= np.concatenate((self.noisyImage, self.contrSum), axis=None)
+        first_dim = len(self.noisy_image)
+        second_dim = len(self.noisy_image[0])
+        third_dim = len(self.noisy_image[0][0])
+        self.numpy_flat_img = np.array([first_dim, second_dim, third_dim])
+        self.noisy_image = np.concatenate((self.noisy_image, self.noisy_image.flatten()), axis=None)
+        self.noisy_image = np.concatenate((self.noisy_image, self.contr_sum), axis=None)
     
 

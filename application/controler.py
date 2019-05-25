@@ -1,33 +1,36 @@
-''' Glowna aplikacja'''
+"""Glowna aplikacja"""
 
-from ImageReceiver.ImReceiver  import Receiver
-from ImageSender.ImSender import Sender
+
+from image_receiver.im_receiver  import Receiver
+from image_sender.im_sender import Sender
 from channel.channel import Channel
+
+
 r = Receiver()
 s = Sender()
 c = Channel()
 
 #zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
-s.loadPicture()
-s.convertImgToNumpyArray()
+s.load_picture()
+s.converting_to_numpy_array()
 s.show()
 
 #Tworzenie tablicy 1D
-s.flatArray()
+s.flat_array()
 
 #kodowanie reeda solomona
 s.reedSolomonEncode()
 
 
 # wysłanie obrazka do kanał
-c.receiveImage(s.send())
+c.receive_image(s.send())
 
 #zauszumienie
 c.addNoise2()
 
 
 #oderanie obrazka z kanału
-r.receive(c.takeImage())
+r.receive(c.take_image())
 
 #prostowanie tablicy
 #r.BCHDecode()
@@ -45,44 +48,45 @@ r = Receiver()
 s = Sender()
 c = Channel()
 
-#zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
-s.loadPicture()
-s.convertImgToNumpyArray()
+# zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
+s.load_picture()
+s.converting_to_numpy_array()
 s.show()
 
-#Tworzenie tablicy 1D
-s.flatArray()
+# Tworzenie tablicy 1D
+s.flat_array()
 
-#kodowanie reeda solomona
-s.reedSolomonEncode()
+# kodowanie reeda solomona
+s.reed_solomon_encode()
 
-#kodowanie BCH
-#s.BCHEncode()
+# kodowanie BCH
+# s.BCHEncode()
 
 # wysłanie obrazka do kanał
-c.receiveImage(s.send())
+c.receive_image(s.send())
 
-#Przywracanie wymiarów
-#c.ReShape()
+# Przywracanie wymiarów
+c.reshape()
 
-#zauszumienie
-c.addNoise2()
+# zauszumienie
+c.add_noise()
+>>>>>>> da0be4be2e251844a6843d352d43aa92c0788296
 
-#wyświetlenie zaszuumionego obazu
+# wyświetlenie zaszuumionego obazu
 c.show()
 
-#Tworzenie tablicy 1D
-c.flatArray()
+# Tworzenie tablicy 1D
+c.flat_array()
 
-#oderanie obrazka z kanału
-r.receive(c.takeImage())
+# oderanie obrazka z kanału
+r.receive(c.take_image())
 
-#prostowanie tablicy
-#r.BCHDecode()
+# prostowanie tablicy
+# r.BCHDecode()
 
-r.ReShape()
+r.reshape()
 # konwersja npyArray to obrazu i wyświetlenie go
 
-r.convertNpyArrayToImage()
+r.convert_numpy_array_to_image()
 r.show()
 '''
