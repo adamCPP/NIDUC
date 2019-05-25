@@ -1,8 +1,8 @@
-''' Glowna aplikacja'''
+"""Glowna aplikacja"""
 
-from ImageReceiver.ImReceiver  import Receiver
-from ImageSender.ImSender import Sender
-from channel.channel import Channel
+from application.image_receiver.im_receiver  import Receiver
+from application.image_sender.im_sender import Sender
+from application.channel.channel import Channel
 
 # tworzenie  glównych komponentów
 r = Receiver()
@@ -11,7 +11,7 @@ c = Channel()
 
 # zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
 s.load_picture()
-s.convertIng_to_numpy_array()
+s.converting_to_numpy_array()
 s.show()
 
 # Tworzenie tablicy 1D
