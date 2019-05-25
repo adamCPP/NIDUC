@@ -58,7 +58,7 @@ class Sender:
         self.numpy_flat_img=np.array([firstDir, secondDir, thirdDir])
         self.numpy_flat_img= np.concatenate((self.numpy_flat_img, self.numpy_img.flatten()), axis= None)
 
-    def reedSolomonEncode(self): 
+    def reed_solomon_encode(self): 
 
         logging.debug("Sender: Kodowanie reeda solomona")
 
@@ -75,7 +75,7 @@ class Sender:
         logging.debug("Sender: output shape")
         logging.debug(self.numpy_flat_img.shape)
 	
-    def BCHEncode(self): #TO DO
+    def BCH_encode(self): #TO DO
         logging.debug("Sender: Kodowanie BCH")
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 17

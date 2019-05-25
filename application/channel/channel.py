@@ -53,7 +53,7 @@ class Channel:
         noisy = self.numpy_img + gauss
         self.noisy_image = noisy.astype('uint8')
 
-    def addNoise2(self):
+    def add_noise2(self):
         logging.debug("Channel: Dodawanie zakłóceń do salomona")
         mean = 0.0
         var = 0.9

@@ -19,14 +19,14 @@ s.show()
 s.flat_array()
 
 #kodowanie reeda solomona
-s.reedSolomonEncode()
+s.reed_solomon_encode()
 
 
 # wysłanie obrazka do kanał
 c.receive_image(s.send())
 
 #zauszumienie
-c.addNoise2()
+c.add_noise2()
 
 
 #oderanie obrazka z kanału
