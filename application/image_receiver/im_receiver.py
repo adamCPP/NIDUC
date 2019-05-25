@@ -19,17 +19,29 @@ class Receiver:
         self.img = None
         self.numpy_img = None
         self.numpy_flat_img = None
+        self.bytearray_img = None
 
     """Zapisuje otrzymany obraz w postaci numpy array"""
-    def receive(self,imageAsNumpyArray):
+    def receive(self, imageAsNumpyArray):
         logging.debug("Receiver: Otrzmano obraz w Receiverze")
         self.numpy_flat_img = imageAsNumpyArray
+
+    """Zapisuje otrzymany obraz w postaci bytearray"""
+    def receive(self, bytearray_img):
+        logging.debug("Receiver: Otrzmano obraz")
+        self.bytearray_img = bytearray_img
 
     """Koweruje numpy array do typu Image zeby mozna bylo wyswietlac"""
     def convert_numpy_array_to_image(self):
         logging.debug("Receiver: Konwersja npyArray do Image w Receiverze")
         logging.debug(self.numpy_img.shape)
         self.img = Image.fromarray(self.numpy_img)
+
+    """Konwertuje bytearray do typu Image"""
+    def convert_bytearray_to_image(self, mode, size):
+        logging.debug("Receiver: Konwersja npyArray do Image w Receiverze")
+        logging.debug(self.numpy_img.shape)
+        self.img = Image.frombytes(mode, size, bytes(self.bytearray_img))
 
     '''pokazuje obraz (nalezy go wczesniej skonwertowac metodą convertNpyArrayToImage)'''
     def show(self):
@@ -80,4 +92,4 @@ class Receiver:
         self.numpy_flat_img += second_dim
         self.numpy_flat_img += third_dim
         np.concatenate((self.numpy_flat_img, self.numpy_img.flatten()), axis=0)
-        self.numpy_img=np.reshape(self.numpy_img, (firs_dim, second_dim, third_dim))
+        self.numpy_img = np.reshape(self.numpy_img, (firs_dim, second_dim, third_dim))
