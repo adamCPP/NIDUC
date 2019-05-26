@@ -24,6 +24,12 @@ c.add_noise3()
 
 r.receive_img_as_np_array(c.take_image())
 
+r.triple_decode()
+
+r.reshape()
+r.convert_numpy_array_to_image()
+r.show()
+
 '''
 ******************
 ***Reed Solomon***

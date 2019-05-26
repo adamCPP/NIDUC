@@ -87,8 +87,23 @@ class Receiver:
     def triple_decode(self):
         logging.debug("Receiver: Dekodowanie potrojonych bitów")
 
-        
+        output = []
+        print(len(self.numpy_flat_img))
 
+        for i in range(0,len(self.numpy_flat_img),3):
+            if(i == len(self.numpy_flat_img)):
+                break
+
+            print(i)
+            if(self.numpy_flat_img[i] == self.numpy_flat_img[i+1] or self.numpy_flat_img[i] == self.numpy_flat_img[i+2] ):
+                output.append(self.numpy_flat_img[i])
+            elif(self.numpy_flat_img[i+1] == self.numpy_flat_img[i+2]):
+                output.append(self.numpy_flat_img[i+1])
+            else:
+                output.append(self.numpy_flat_img[i])
+
+        self.numpy_flat_img = np.array(output)
+        print(self.numpy_flat_img)
 
 
     """Przywracanie kształtów"""

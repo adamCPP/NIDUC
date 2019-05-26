@@ -110,16 +110,19 @@ class Sender:
 
         logging.debug("Sender: Oryginalna tablica")
         logging.debug(self.numpy_flat_img[0:10])
-        output = np.array
+        output = []
 
         for i in range(0,len(self.numpy_flat_img[0:10])):
             for j in range(0,3):
-                output = np.append(output,self.numpy_flat_img[i])
+                output.append(self.numpy_flat_img[i])
 
         logging.debug("Sender: Potrojona tablica")
         print(output)
 
-        self.numpy_flat_img  = output
+        self.numpy_flat_img  = np.array(output)
+
+        print("Len:")
+        print(len(self.numpy_flat_img))
 
 
 # to nizej to sprawdenie  czy wszystko działa
