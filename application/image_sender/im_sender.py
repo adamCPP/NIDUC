@@ -105,6 +105,22 @@ class Sender:
         self.packet= np.concatenate((self.numpy_flat_img, self.ecc), axis= None)
         self.numpy_flat_img=self.packet
 
+    def triple_encode(self): # kodowanie  tylko 10 pierwszych elementow
+        logging.debug("Sender: potrajanie bitów")
+
+        logging.debug("Sender: Oryginalna tablica")
+        logging.debug(self.numpy_flat_img[0:10])
+        output = np.array
+
+        for i in range(0,len(self.numpy_flat_img[0:10])):
+            for j in range(0,3):
+                output = np.append(output,self.numpy_flat_img[i])
+
+        logging.debug("Sender: Potrojona tablica")
+        print(output)
+
+        self.numpy_flat_img  = output
+
 
 # to nizej to sprawdenie  czy wszystko działa
 '''

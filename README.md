@@ -8,10 +8,11 @@ TODO:
 - obraz z różnicą
 - potrajanie bitów
 - testy
+- poprawić add_noise2
 
 CODING_STANDARDS:
 - gitlogi w języku angielskim
-- nazwy klas zaczynamy z wielkiej litery, CamelCase
+- nazwy klas zaczynamy z wielkiej litery
 - nazwy stalych pisane w całości wielkimi literami
 - pozostałe nazwy (w tym nazwy plików .py i pakietów) z małej litery, z podkreślnikami
 - każda klasa w osobnym pliku

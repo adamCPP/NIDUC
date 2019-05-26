@@ -10,6 +10,28 @@ r = Receiver()
 s = Sender()
 c = Channel()
 
+s.load_picture()
+s.converting_to_numpy_array()
+s.show()
+
+s.flat_array()
+
+s.triple_encode()
+
+c.receive_image(s.send())
+
+c.add_noise3()
+
+r.receive_img_as_np_array(c.take_image())
+
+'''
+******************
+***Reed Solomon***
+******************
+r = Receiver()
+s = Sender()
+c = Channel()
+
 #zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
 s.load_picture()
 s.converting_to_numpy_array()
@@ -38,13 +60,17 @@ r.reshape()
 r.convert_numpy_array_to_image()
 r.show()
 
-#prostowanie tablicy
-#r.BCHDecode()
-
 
 
 
 '''
+
+'''
+*********
+***BCH***
+*********
+
+
 # tworzenie  glównych komponentów
 r = Receiver()
 s = Sender()

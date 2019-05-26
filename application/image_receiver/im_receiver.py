@@ -84,6 +84,13 @@ class Receiver:
 
         self.bch.decode(self.numpy_flat_img, self.ecc)
 
+    def triple_decode(self):
+        logging.debug("Receiver: Dekodowanie potrojonych bitów")
+
+        
+
+
+
     """Przywracanie kształtów"""
     def reshape(self):
         logging.debug("Receiver: Przywracanie kształtów ")
