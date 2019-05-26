@@ -35,15 +35,13 @@ r.receive_img_as_np_array(c.take_image())
 r.reed_solomon_decode()
 
 r.reshape()
+r.convert_numpy_array_to_image()
+r.show()
 
 #prostowanie tablicy
 #r.BCHDecode()
 
-#r.ReShape()
-# konwersja npyArray to obrazu i wyświetlenie go
 
-#r.convertNpyArrayToImage()
-#r.show()
 
 
 '''

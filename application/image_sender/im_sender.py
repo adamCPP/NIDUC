@@ -63,7 +63,7 @@ class Sender:
     def reed_solomon_encode(self): 
 
         logging.debug("Sender: Kodowanie reeda solomona")
-        self.numpy_flat_img = np.array(self.numpy_flat_img[0:1000])
+        #self.numpy_flat_img = np.array(self.numpy_flat_img[0:1000])
         coder = rs.RSCoder(255,223)
         output = []
         logging.debug("Sender: Numpy flat image")

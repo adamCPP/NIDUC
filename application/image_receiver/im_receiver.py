@@ -63,7 +63,8 @@ class Receiver:
             #print("Encoded Data: ")
             #print(coder.decode(data))
 
-        self.numpy_flat_img = np.array(output)
+        self.numpy_flat_img = np.array(output[0].split(" "))
+        #self.numpy_flat_img = np.array(output)
         print(self.numpy_flat_img)
 
 
@@ -89,7 +90,7 @@ class Receiver:
         first_dim = self.numpy_flat_img[0]
         second_dim = self.numpy_flat_img[1]
         third_dim = self.numpy_flat_img[2]
-        size = first_dim * second_dim * third_dim
+        size = int(first_dim) * int(second_dim) * int(third_dim)
         
         self.numpy_img = [self.numpy_flat_img[3:size + 3]]
         self.numpy_img = np.array(self.numpy_img)
