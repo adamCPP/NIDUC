@@ -5,13 +5,45 @@ from image_receiver.im_receiver  import Receiver
 from image_sender.im_sender import Sender
 from channel.channel import Channel
 import logging
+import tkinter  as tk
+from tkinter.filedialog import askopenfilename
 
 class Controler:
 
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG)
         logging.debug("Controler created")
+        self.main()
 
+    def exit(self):
+        quit()
+
+    def main(self):
+        logging.debug("Main")
+        HEIGH = 150
+        WIDTH = 200
+
+        root = tk.Tk()
+        root.title("Forward Error Correction")
+
+        canvas = tk.Canvas(root,heigh=HEIGH,width=WIDTH)
+        canvas.pack()
+
+        frame = tk.Frame(root,bg="#808080")
+        frame.place(relwidth=1,relheight=1)
+
+        button_sal = tk.Button(frame,text="Reed Solomon",command=self.reed_solomon)
+        button_sal.pack()
+        button_triple = tk.Button(frame,text="Potrajanie bitów",command=self.triple)
+        button_triple.pack()
+        button_ham = tk.Button(frame,text="Hamming")
+        button_ham.pack()
+        button_bch = tk.Button(frame,text="BCH",command=self.bch)
+        button_bch.pack()
+        button_exit = tk.Button(frame,text="Wyjście",command=self.exit)
+        button_exit.pack()
+
+        root.mainloop()
 
     def hamming(self):
         logging.debug("Hamming")
