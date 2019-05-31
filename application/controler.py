@@ -136,45 +136,47 @@ class Controler:
         s = Sender()
         c = Channel()
 
-        # zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
-        s.load_picture()
-        s.converting_to_numpy_array()
+        #zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
+        s.loadPicture()
+        s.convertImgToNumpyArray()
         s.show()
-
-        # Tworzenie tablicy 1D
-        s.flat_array()
-
-        # kodowanie reeda solomona
-        s.reed_solomon_encode()
-
-        # kodowanie BCH
-        # s.BCHEncode()
-
+        #-------------------------------------------
+        #Tworzenie tablicy 1D
+        s.BCHflatArray()
+        #zmiana formatu
+        s.BCHtoByteArray()
+        s.BCHPacketize()
+        #kodowanie BCH
+        s.BCHEncode()
+        #-------------------------------------------
         # wysłanie obrazka do kanał
-        c.receive_image(s.send())
-
-        # Przywracanie wymiarów
-        c.reshape()
-
-        # zauszumienie
-        c.add_noise()
-
-        # wyświetlenie zaszuumionego obazu
-        c.show()
-
-        # Tworzenie tablicy 1D
-        c.flat_array()
-
-        # oderanie obrazka z kanału
-        r.receive(c.take_image())
-
-        # prostowanie tablicy
-        # r.BCHDecode()
-
-        r.reshape()
-        # konwersja npyArray to obrazu i wyświetlenie go
-
-        r.convert_numpy_array_to_image()
+        c.BCHreceiveImage(s.BCHsend(),s.BCHsendX(),s.BCHsendY(),s.BCHsendZ())
+        #-------------------------------------------
+        c.BCHdePacketize()
+        #zmiana formatu
+        c.BCHtoNumArray()
+        #Przywracanie wymiarów
+        c.BCHReShape()
+        #zauszumienie
+        c.addNoise()
+        #wyświetlenie zaszuumionego obazu
+        c.BCHshow()
+        #Tworzenie tablicy 1D
+        c.BCHflatArray()
+        #zmiana formatu
+        c.BCHtoByteArray()
+        #-------------------------------------------
+        #oderanie obrazka z kanału
+        r.BCHreceive(c.BCHsend(), c.BCHsendX(), c.BCHsendY(), c.BCHsendZ())
+        #-------------------------------------------
+        r.BCHdePacketize()
+        #zmiana formatu
+        r.BCHtoNumArray()
+        #Przywracanie wymiarów
+        r.BCHReShape()
+        #-------------------------------------------
+        # konwersja npyArray na obraz i wyświetlenie go
+        r.convertNpyArrayToImage()
         r.show()
 
     def triple(self):

@@ -14,6 +14,15 @@ class Channel:
         self.numpy_flat_img = None
         self.noisy_image = None
 
+        self.numpyImg = None
+        self.BCHImage = None
+        self.noisyImage = None
+        self.BCHImgCopy = None
+        self.firstDir=None
+        self.secondDir=None
+        self.thirdDir=None
+        self.size=None
+
     """Przekazuje obraz do receivera"""
     def take_image(self):
         logging.debug("Channel: Przekazanie obrazka")
@@ -98,12 +107,17 @@ class Channel:
                 self.numpy_flat_img[iter]=0
             iter = iter + 1
         self.noisy_image = self.numpy_flat_img
-
         print(self.numpy_flat_img)
 
     def show(self):
         logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")
         image = Image.fromarray(self.noisy_image)
+        logging.debug("Channel: Wyswietlenie obrazu")
+        image.show()
+	  
+    def BCHshow(self):
+        logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")
+        image = Image.fromarray(self.noisyImage)
         logging.debug("Channel: Wyswietlenie obrazu")
         image.show()
 
@@ -115,5 +129,71 @@ class Channel:
         self.numpy_flat_img = np.array([first_dim, second_dim, third_dim])
         self.noisy_image = np.concatenate((self.noisy_image, self.noisy_image.flatten()), axis=None)
         self.noisy_image = np.concatenate((self.noisy_image, self.contr_sum), axis=None)
-    
 
+    def BCHreceiveImage(self, Encoded, sizeX, sizeY, sizeZ):
+        logging.debug("CHANEL		Odebranie obrazka przez channel")
+        self.BCHImage=Encoded
+        self.BCHImgCopy=Encoded
+        self.firstDir=sizeX
+        self.secondDir=sizeY
+        self.thirdDir=sizeZ
+        self.size=self.firstDir*self.secondDir*self.thirdDir
+
+    def BCHdePacketize(self):
+        logging.debug("CHANEL		BCH depacketize")
+        depacket=bytearray()
+        for x in range(0, int(len(self.BCHImage)/712)):
+                depacket=depacket+self.BCHImage[712*x:712*x+512]
+        self.BCHImage=depacket
+
+    def BCHtoNumArray(self):
+        logging.debug("CHANEL		BCHImg to numpy array")
+        self.numpyImg= np.array(self.BCHImage[:self.size])
+        self.BCHImage= np.frombuffer(self.numpyImg, dtype=np.uint8)
+     
+    def BCHReShape(self):
+        logging.debug("CHANEL		Przywracanie kształtów przez channel")
+        self.numpyImg=np.array([1])
+        self.numpyImg=np.reshape(self.BCHImage.transpose(), (self.firstDir, self.secondDir, self.thirdDir))
+
+
+    def BCHflatArray(self):
+        logging.debug("CHANEL		Prostowanie tablicy")
+        self.BCHImage= np.array([1])
+        self.BCHImage= np.concatenate((self.BCHImage, self.noisyImage.flatten()), axis= None)
+
+    def BCHtoByteArray(self):
+        logging.debug("CHANEL		zamiana obrazka na ByteArray")
+        repacket=bytearray()
+        self.BCHImage = bytearray(self.BCHImage)[8::8]
+        mod_size= self.size % 512
+        self.BCHImage= self.BCHImage+ bytearray(512-mod_size)
+        for x in range(0, int(len(self.BCHImage)/512)):
+                packet=self.BCHImage[x*512:(x+1)*512]+self.BCHImgCopy[(x)*712+512:(x+1)*712]
+                repacket= repacket+packet
+        self.BCHImage=repacket
+
+    def BCHsend(self):
+        logging.debug("CHANEL		Przekazanie bytearray przez channel")
+        return  self.BCHImage
+    def BCHsendX(self):
+        logging.debug("CHANEL		Wymiar 1")
+        return self.firstDir
+    def BCHsendY(self):
+        logging.debug("CHANEL		Wymiar 2")
+        return self.secondDir
+    def BCHsendZ(self):
+        logging.debug("CHANEL		Wymiar 3")
+        return self.thirdDir
+	  
+	  
+    def addNoise(self):
+        logging.debug("CHANEL		Dudawanie zakłóceń")
+        mean = 0.0
+        var = 0.6
+        sigma = var**0.5
+        gauss = np.array(self.numpyImg.shape)
+        gauss = np.random.normal(mean,sigma,(self.firstDir,self.secondDir,self.thirdDir))
+        gauss = gauss.reshape(self.firstDir,self.secondDir,self.thirdDir)
+        noisy = self.numpyImg + gauss
+        self.noisyImage =  noisy.astype('uint8')
