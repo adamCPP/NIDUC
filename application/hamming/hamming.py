@@ -8,74 +8,108 @@ class Hamming:
     n = 7
     k = 4
 
-    P = np.array([
-        [1, 1, 0],
-        [0, 1, 1],
-        [1, 1, 1],
-        [1, 0, 1]
-    ])
-
-    G = np.concatenate((P, np.identity(k)), axis=1)
-
-    H = np.concatenate((np.identity(n-k), P.T), axis=1)
-
-    # Tabela dekodowania, syndrom s postaci np. 011 odpowiada poprawce o ind 3
-    S = np.array([
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0]
-    ])
-
-    ''' uruchamia logi'''
-    def __init__(self):
+    """Uruchamia logi"""
+    def __init__(self, n=7, k=(n+1)//2):
         logging.basicConfig(level=logging.DEBUG)
-        logging.debug("Stworzenie Hamming")
+        logging.debug(f"Stworzenie hamming ({self.n}, {self.k})")
         self.input = None
         self.output = None
+        self.n = n
+        self.k = k
 
-    '''Koduje numpyArray kodem (7, 4)'''
-    def encode(self, numpyArray):
-        logging.debug("Kodowanie Hamminga(7, 4)")
+    """Uogólnione kodowanie Hamminga"""
+    def encode(self, data):
+        logging.debug(f"Kodowanie Hamminga ({self.n}, {self.k})")
+        print(f"data type: {type(data)}")
+        unpacked = np.unpackbits(data)
+        for _ in range(len(unpacked) % self.k):
+            unpacked.append(0)
+        bits_array = unpacked.reshape(-1, int(self.k))
         output = []
-        bits_array = np.unpackbits(numpyArray).reshape(-1, 4)
-        for i, bits in enumerate(bits_array):
-            if not i % 1000:
-                print(i/len(bits_array))
-            extra = bits.dot(Hamming.G)
-            extra %= 2
-            output.append([int(x) for x in extra.tolist()])
-        logging.debug("Kodowanie obliczone, pakowanie bitów")
-        #print(output[:10])
-        np_out = np.packbits(output)
-        #print(repr(np_out[:5]))
-        logging.debug("Kodowanie skończone")
-        return np_out
+        for bits in bits_array:
+            prepared_bits = self.add_parity_bits(bits)
+            output.append(self.encode_bits(prepared_bits))
+        return np.array(np.packbits(output), dtype=np.uint8)
 
-    '''Dekoduje numpyArray kodem (7, 4)'''
-    def decode(self, numpyArray):
-        logging.debug("Dekodowanie Hamminga(7, 4)")
-        print('numpy array: ', repr(numpyArray[:7]))
-        output = []
-        unpacked_out = np.unpackbits(numpyArray)
-        print('unpacked: ', repr(unpacked_out[:7]), 'len: ', len(unpacked_out), 'mod7: ', (len(unpacked_out) % 7))
-        if(len(unpacked_out) % 7):
-            shortened_out = unpacked_out[:-(len(unpacked_out) % 7)]
-        else:
-            shortened_out = unpacked_out
-        print('shortened:', repr(shortened_out[:7]))
-        reshaped_out = shortened_out.reshape(-1, 7)
-        print('reshaped: ', repr(reshaped_out[:7]))
-        for bits in reshaped_out:
-            s = bits.dot(Hamming.H.T)
-            s %= 2
-            e = Hamming.S[4 * int(s[2]) + 2 * int(s[1]) + int(s[0])]
-            c = np.logical_xor(e, bits)
-            output.append([bool(x) for x in c[3:].tolist()])
-        print('out: ', repr(output[:4]))
-        np_out = np.packbits(output)
-        return np_out
+    """Wstawia zera w miejsca o pozycji będącej potęgą dwójki"""
+    def add_parity_bits(self, bits):
+        bits_index = 0
+        result_bits_counter = 1
+        power_of_2 = 1
+        result = []
+        while result_bits_counter <= self.n:
+            if result_bits_counter == power_of_2:
+                result.append(0)
+                power_of_2 *= 2
+            else:
+                result.append(bits[bits_index])
+                bits_index += 1
+            result_bits_counter += 1
+        return result
+
+    """Koduje n bitów"""
+    def encode_bits(self, bits):
+        power_of_2 = 1
+        while power_of_2 <= self.k:
+            sum = 0
+            bits_index = self.n - 1
+            while bits_index >= 0:
+                for l in range(power_of_2):
+                    sum += bits[bits_index]
+                    bits_index -= 1
+                bits_index -= power_of_2
+            bits[power_of_2 - 1] = sum % 2
+            power_of_2 *= 2
+        return bits
+
+    """Dekodowanie n bitów"""
+    def get_corrected_bits(self, bits):
+        error = 0
+        power_of_two = 1
+        while power_of_two <= self.k:
+            error += self.k_parity_bit_correctness(bits, power_of_two)
+            power_of_two *= 2
+        if error:
+            error -= 1
+            bits[error] = int(not bits[error])
+        return bits
+
+    """Uogólnione dekodowanie Hamminga"""
+    def decode(self, data):
+        unpacked = np.unpackbits(np.array(data, dtype=np.uint8))
+        if len(unpacked) % self.n:
+            unpacked = unpacked[:-(len(unpacked) % self.n)]
+
+        result = []
+
+        reshaped_data = np.array(unpacked).reshape(-1, self.n)
+        for bits in reshaped_data:
+            result.append(self.get_data_bits(self.get_corrected_bits(bits)))
+        return np.packbits(np.array(result))
+
+    """Wyciąganie bitów informacyjnych"""
+    def get_data_bits(self, bits):
+        # return sorted(list(
+        #   set(range(self.n)) - set(x ** 2 - 1 for x in range(int(self.n ** 0.5)))
+        # ))
+        power_of_2 = 1
+        result = []
+        for i in range(self.n):
+            if i != power_of_2 - 1:
+                result.append(bits[i])
+            else:
+                power_of_2 *= 2
+            i += 1
+        return result
+
+    def k_parity_bit_correctness(self, bits, k):
+        j = self.n - 1
+        sum = 0
+        while j >= 0:
+            for i in range(k):
+                sum += bits[j]
+                j -= 1
+            j -= k
+        if sum % 2 != 0:
+            return k
+        return 0

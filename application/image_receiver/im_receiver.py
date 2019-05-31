@@ -67,7 +67,6 @@ class Receiver:
         #self.numpy_flat_img = np.array(output)
         print(self.numpy_flat_img)
 
-
     def bch_decode(self): #TO DO
         logging.debug("Receiver: Dekodowanie BCH")
         self.BCH_POLYNOMIAL = 8219
@@ -90,8 +89,8 @@ class Receiver:
         output = []
         print(len(self.numpy_flat_img))
 
-        for i in range(0,len(self.numpy_flat_img),3):
-            if(i == len(self.numpy_flat_img)):
+        for i in range(0, len(self.numpy_flat_img), 3):
+            if i == len(self.numpy_flat_img):
                 break
 
             print(i)
@@ -118,6 +117,10 @@ class Receiver:
         self.numpy_img = np.array(self.numpy_img)
         self.numpy_img = self.numpy_img.transpose()
         self.numpy_img = np.squeeze(self.numpy_img, axis=1)
+
+    def reshape(self, shape):
+        self.numpy_img = np.reshape(self.numpy_flat_img, shape)
+
 
     def flat_array(self):
         logging.debug("Receiver: Prostowanie tablicy")

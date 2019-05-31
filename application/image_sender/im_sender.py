@@ -32,6 +32,7 @@ class Sender:
 
         self.img = Image.open(filename)
         self.img.load()
+        os.chdir(r'../..')
 
     """Konwertuje objekt Image na tablicę numpy"""
     def converting_to_numpy_array(self):
@@ -57,8 +58,8 @@ class Sender:
         firstDir= len(self.numpy_img)
         secondDir= len(self.numpy_img[0])
         thirdDir= len(self.numpy_img[0][0])
-        self.numpy_flat_img=np.array([firstDir, secondDir, thirdDir])
-        self.numpy_flat_img= np.concatenate((self.numpy_flat_img, self.numpy_img.flatten()), axis= None)
+        self.numpy_flat_img = np.array([firstDir, secondDir, thirdDir])
+        self.numpy_flat_img = np.concatenate((self.numpy_flat_img, self.numpy_img.flatten()), axis= None)
 
     def reed_solomon_encode(self): 
 
@@ -71,11 +72,10 @@ class Sender:
         logging.debug(self.numpy_flat_img.shape)
     
         print("Dlugosc stringa"+str(len(self.numpy_flat_img)))
-        s=""
-        s =  s + str(self.numpy_flat_img[0])
-        for i in range(1,self.numpy_flat_img.shape[0]):
-            s=s+" "+str(self.numpy_flat_img[i])
-
+        s = ""
+        s = s + str(self.numpy_flat_img[0])
+        for i in range(1, self.numpy_flat_img.shape[0]):
+            s = s + " " + str(self.numpy_flat_img[i])
 
         self.numpy_flat_img = s
 
@@ -93,7 +93,7 @@ class Sender:
         logging.debug(self.numpy_flat_img.shape)
         logging.debug("Sender: output ")
         logging.debug(self.numpy_flat_img[0])
-	
+
     def BCH_encode(self): #TO DO
         logging.debug("Sender: Kodowanie BCH")
         self.BCH_POLYNOMIAL = 8219

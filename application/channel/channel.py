@@ -23,14 +23,17 @@ class Channel:
     """Pobiera obraz z sendera"""
     def receive_image(self, npyFlatImage):
         logging.debug("Channel: Odebranie obrazka")
-        self.numpy_flat_img=npyFlatImage
+        self.numpy_flat_img = npyFlatImage
      
     """Przywracanie kształtów"""
     def reshape(self):
         logging.debug("Channel: Przywracanie kształtów")
         first_dim = self.numpy_flat_img[0]
+        print(f"first dim: {first_dim}")
         second_dim = self.numpy_flat_img[1]
+        print(f"sec dim: {second_dim}")
         third_dim = self.numpy_flat_img[2]
+        print(f"third dim: {third_dim}")
         size = first_dim * second_dim * third_dim
         
         self.numpy_img = ([self.numpy_flat_img[3:size + 3]])
@@ -48,8 +51,8 @@ class Channel:
         var = 0.9
         sigma = var**0.5
         gauss = np.array(self.numpy_img.shape)
-        gauss = np.random.normal(mean,sigma,(row,col,ch))
-        gauss = gauss.reshape(row,col,ch)
+        gauss = np.random.normal(mean, sigma, (row, col, ch))
+        gauss = gauss.reshape(row, col, ch)
         noisy = self.numpy_img + gauss
         self.noisy_image = noisy.astype('uint8')
 
@@ -59,31 +62,41 @@ class Channel:
         var = 0.9
         sigma = var**0.5
         gauss = np.array(self.numpy_flat_img.shape)
-        gauss = np.random.normal(mean,sigma,self.numpy_flat_img.shape)
+        gauss = np.random.normal(mean, sigma, self.numpy_flat_img.shape)
         print(gauss)
         print(self.numpy_flat_img)
         iter = 0
         for val in self.numpy_flat_img:
-            if (gauss[iter]>0.95 and val.isdigit()):
-                val='a'
-            iter=iter+1
+            if gauss[iter] > 0.95 and val.isdigit():
+                val = 'a'
+            iter = iter + 1
         self.noisy_image = self.numpy_flat_img
 
-    
+    def add_noise_to_numpy_flat_img(self):
+        logging.debug("Dodawanie zakłóceń do numpy_flat_img")
+        mean = 0.0
+        var = 0.9
+        sigma = var ** 0.5
+        gauss = np.array(self.numpy_flat_img.shape)
+        gauss = np.random.normal(mean, sigma, self.numpy_flat_img.shape)
+        gauss = gauss.reshape(self.numpy_flat_img.shape)
+        self.noisy_image = self.numpy_flat_img + gauss
+        self.noisy_image = self.noisy_image.astype('uint8')
+
     def add_noise3(self):
         logging.debug("Channel: Dodawanie zakłóceń do potrajania bitów")
         mean = 0.0
         var = 0.9
-        sigma = var**0.5
+        sigma = var ** 0.5
         gauss = np.array(self.numpy_flat_img.shape)
-        gauss = np.random.normal(mean,sigma,self.numpy_flat_img.shape)
+        gauss = np.random.normal(mean, sigma, self.numpy_flat_img.shape)
         print(gauss)
         print(self.numpy_flat_img)
         iter = 0
         for val in self.numpy_flat_img:
-            if gauss[iter]>0.9:
+            if gauss[iter] > 0.9:
                 self.numpy_flat_img[iter]=0
-            iter=iter+1
+            iter = iter + 1
         self.noisy_image = self.numpy_flat_img
 
         print(self.numpy_flat_img)

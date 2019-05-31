@@ -1,7 +1,7 @@
 from unittest import TestCase
 import numpy as np
 
-from application.Hamming.hamming import Hamming
+from application.hamming.hamming import Hamming
 
 
 class TestHamming(TestCase):
