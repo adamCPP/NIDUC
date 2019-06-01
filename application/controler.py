@@ -5,6 +5,7 @@ from application.image_receiver.im_receiver  import Receiver
 from application.image_sender.im_sender import Sender
 from application.channel.channel import Channel
 from application.hamming.hamming import Hamming
+from application.statistics.statistics import Statistics
 import logging
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
@@ -52,27 +53,32 @@ class Controler:
     def without_coding(self):
         logging.debug("Bez kodowania")
         sender = Sender()
-        simple_channel = Channel()
-        simple_receiver = Receiver()
+        channel = Channel()
+        receiver = Receiver()
+        receiver.title += ' - brak kodowania'
 
         sender.load_picture()
         sender.converting_to_numpy_array()
         sender.show()
 
-        simple_channel.receive_image(sender.numpy_img)
-        simple_channel.add_noise_to_numpy_flat_img()
+        channel.receive_image(sender.numpy_img)
+        channel.add_noise_to_numpy_flat_img()
 
-        simple_receiver.receive_img_as_np_array(simple_channel.take_image())
-        simple_receiver.reshape(sender.numpy_img.shape)
-        simple_receiver.convert_numpy_array_to_image()
-        simple_receiver.show()
+        receiver.receive_img_as_np_array(channel.take_image())
+        receiver.reshape(sender.numpy_img.shape)
+        receiver.convert_numpy_array_to_image()
+        receiver.show()
+        stat = Statistics()
+        stat.difference_img(sender.img, receiver.img)
 
     def hamming(self):
         logging.debug("Hamming")
         hamming = Hamming()
+        # hamming.generate_encoding_dictionary()
         sender = Sender()
         channel = Channel()
         receiver = Receiver()
+        receiver.title += f' - Hamming ({hamming.n}), ({hamming.k})'
 
         sender.load_picture()
         sender.converting_to_numpy_array()
@@ -91,6 +97,8 @@ class Controler:
         receiver.reshape(sender.numpy_img.shape)
         receiver.convert_numpy_array_to_image()
         receiver.show()
+        stat = Statistics()
+        stat.difference_img(sender.img, receiver.img)
 
     def reed_solomon(self):
         logging.debug("Reed Solomon")
