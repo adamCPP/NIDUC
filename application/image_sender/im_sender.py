@@ -24,26 +24,26 @@ class Sender:
 
         self.numpyImg = None
         self.numpyFlatImg = None
-        self.size= None
-        self.packet=[]
-        self.encoded=bytearray()
+        self.size = None
+        self.packet = []
+        self.encoded = bytearray()
 
-        self.size= None
-        self.firstDir= None
-        self.secondDir= None
-        self.thirdDir= None
+        self.size = None
+        self.firstDir = None
+        self.secondDir = None
+        self.thirdDir = None
 
     """Laduje orazek z folderu  resources"""
     def load_picture(self):
-        logging.debug("Sender: Your working directory is "+os.getcwd())
+        logging.debug("Sender: Your working directory is " + os.getcwd())
         os.chdir(r'./application/resources')
         Tk().withdraw() 
         filename = askopenfilename() 
-        logging.debug("Sender: You choosed  "+filename)
+        logging.debug("Sender: You choosed  " + filename)
 
         self.img = Image.open(filename)
         self.img.load()
-        os.chdir(r'../..')
+        os.chdir(r'./../..')
 
     """Konwertuje objekt Image na tablicę numpy"""
     def converting_to_numpy_array(self):
@@ -58,7 +58,7 @@ class Sender:
     """Pokazuje obraz jaki został wczytany tzn przed zakłóceniami wprowadzonymi przez kanał transmisji"""
     def show(self):
         logging.debug("Sender: Wyswietlenie obrazka")
-        self.img.show() 
+        self.img.show(title='Oryginał')
 
     def send(self):
         logging.debug("Sender: Wysylanie obrazka")
@@ -66,11 +66,11 @@ class Sender:
 
     def flat_array(self):
         logging.debug("Sender: Prostowanie tablicy")
-        firstDir= len(self.numpy_img)
-        secondDir= len(self.numpy_img[0])
-        thirdDir= len(self.numpy_img[0][0])
-        self.numpy_flat_img = np.array([firstDir, secondDir, thirdDir])
-        self.numpy_flat_img = np.concatenate((self.numpy_flat_img, self.numpy_img.flatten()), axis= None)
+        first_dim = len(self.numpy_img)
+        second_dim = len(self.numpy_img[0])
+        third_dim = len(self.numpy_img[0][0])
+        self.numpy_flat_img = np.array([first_dim, second_dim, third_dim])
+        self.numpy_flat_img = np.concatenate((self.numpy_flat_img, self.numpy_img.flatten()), axis=None)
 
     def reed_solomon_encode(self): 
 
