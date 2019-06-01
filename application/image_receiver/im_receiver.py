@@ -27,10 +27,11 @@ class Receiver:
         self.firstDir= None
         self.secondDir= None
         self.thirdDir= None
+        self.title = 'Obraz odebrany'
 
     """Zapisuje otrzymany obraz w postaci numpy array"""
     def receive_img_as_np_array(self, imageAsNumpyArray):
-        logging.debug("Receiver: Otrzmano obraz w Receiverze")
+        logging.debug("Receiver: Otrzymano obraz w Receiverze")
         self.numpy_flat_img = imageAsNumpyArray
 
     """Zapisuje otrzymany obraz w postaci bytearray"""
@@ -53,7 +54,7 @@ class Receiver:
     '''pokazuje obraz (nalezy go wczesniej skonwertowac metodą convertNpyArrayToImage)'''
     def show(self):
         logging.debug("Receiver: Wyświetlenie obrazu ")
-        self.img.show()
+        self.img.show(title=self.title)
 
     def reed_solomon_decode(self):
         logging.debug("Receiver: Dekodowanie Reeda Solomona")
@@ -86,23 +87,23 @@ class Receiver:
         logging.debug("RECEIVER		Dekodowanie BCH")
         self.BCH_POLYNOMIAL = 8219
         self.BCH_BITS = 123
-        depacket=bytearray()
-        bitflips=int()
+        depacket = bytearray()
+        bitflips = int()
         self.bch = bchlib.BCH(self.BCH_POLYNOMIAL, self.BCH_BITS)
         for x in range(0, int(len(self.numpyFlatImg)/712)):
-                bitflips+=self.bch.decode_inplace(self.numpyFlatImg[712*x:712*x+512], self.numpyFlatImg[712*x+512:712*(x+1)])
+                bitflips += self.bch.decode_inplace(self.numpyFlatImg[712*x:712*x+512], self.numpyFlatImg[712*x+512:712*(x+1)])
         print('bitflips: %d' % (bitflips))
         for x in range(0, int(len(self.numpyFlatImg)/712)):
-                depacket=depacket+self.numpyFlatImg[712*x:712*x+512]
-        self.numpyFlatImg=depacket
+            depacket = depacket+self.numpyFlatImg[712*x:712*x+512]
+        self.numpyFlatImg = depacket
 
     def BCHtoNumArray(self):
         logging.debug("RECEIVER		BCH TO NUMPY ARRAY")
-        self.numpyFlatImg= np.frombuffer(self.numpyFlatImg[:self.size], dtype=np.uint8)
+        self.numpyFlatImg = np.frombuffer(self.numpyFlatImg[:self.size], dtype=np.uint8)
 
     def BCHReShape(self):
         logging.debug("RECEIVER		Przywracanie kształtów przez channel")
-        self.numpyImg=np.reshape(self.numpyFlatImg.transpose(), (self.firstDir, self.secondDir, self.thirdDir))
+        self.numpyImg = np.reshape(self.numpyFlatImg.transpose(), (self.firstDir, self.secondDir, self.thirdDir))
 
     def convertNpyArrayToImage(self):
         logging.debug("RECEIVER		Konwersja npyArray do Image w Receiverze")
@@ -112,7 +113,6 @@ class Receiver:
     def show(self):
         logging.debug("RECEIVER		Wyświetlenie obrazu w receiverze")
         self.img.show()
-
 
     def triple_decode(self):
         logging.debug("Receiver: Dekodowanie potrojonych bitów")
@@ -135,7 +135,6 @@ class Receiver:
         self.numpy_flat_img = np.array(output)
         print(self.numpy_flat_img)
 
-
     """Przywracanie kształtów"""
     def reshape(self):
         logging.debug("Receiver: Przywracanie kształtów ")
@@ -151,7 +150,6 @@ class Receiver:
 
     def reshape(self, shape):
         self.numpy_img = np.reshape(self.numpy_flat_img, shape)
-
 
     def flat_array(self):
         logging.debug("Receiver: Prostowanie tablicy")
