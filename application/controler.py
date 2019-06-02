@@ -175,16 +175,16 @@ class Controler:
         c.bch_to_byte_array()
         #-------------------------------------------
         #oderanie obrazka z kanału
-        r.BCHreceive(c.bch_send(), c.bch_send_x(), c.bch_send_y(), c.bch_send_z())
+        r.bch_receive(c.bch_send(), c.bch_send_x(), c.bch_send_y(), c.bch_send_z())
         #-------------------------------------------
-        r.BCHdePacketize()
+        r.bch_deboundling()
         #zmiana formatu
-        r.BCHtoNumArray()
+        r.bch_to_num_array()
         #Przywracanie wymiarów
-        r.BCHReShape()
+        r.bch_reshape()
         #-------------------------------------------
         # konwersja npyArray na obraz i wyświetlenie go
-        r.convertNpyArrayToImage()
+        r.bch_convert_npy_array_to_image()
         r.show()
 
     def triple(self):
