@@ -1,11 +1,11 @@
 """Glowna aplikacja"""
 
 
-from application.image_receiver.im_receiver  import Receiver
-from application.image_sender.im_sender import Sender
-from application.channel.channel import Channel
-from application.hamming.hamming import Hamming
-from application.statistics.statistics import Statistics
+from image_receiver.im_receiver  import Receiver
+from image_sender.im_sender import Sender
+from channel.channel import Channel
+from hamming.hamming import Hamming
+from statistics.statistics import Statistics
 import logging
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
@@ -145,20 +145,20 @@ class Controler:
         c = Channel()
 
         #zaladowanie obrazka, konwersja do numpyArray i wyświetlenie obrazu przed wysłaniem
-        s.loadPicture()
-        s.convertImgToNumpyArray()
+        s.bch_load_picture()
+        s.bch_convert_img_to_numpy_array()
         s.show()
         #-------------------------------------------
         #Tworzenie tablicy 1D
-        s.BCHflatArray()
+        s.bch_flat_array()
         #zmiana formatu
-        s.BCHtoByteArray()
-        s.BCHPacketize()
+        s.bch_to_byte_array()
+        s.bch_boundling()
         #kodowanie BCH
-        s.BCHEncode()
+        s.bch_encode()
         #-------------------------------------------
         # wysłanie obrazka do kanał
-        c.BCHreceiveImage(s.BCHsend(),s.BCHsendX(),s.BCHsendY(),s.BCHsendZ())
+        c.BCHreceiveImage(s.bch_send(),s.bch_send_x(),s.bch_send_y(),s.bch_send_z())
         #-------------------------------------------
         c.BCHdePacketize()
         #zmiana formatu

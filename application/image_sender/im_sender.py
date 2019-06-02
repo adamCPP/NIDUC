@@ -22,16 +22,16 @@ class Sender:
         self.numpy_flat_img = None
         self.bytearray_img = None
 
-        self.numpyImg = None
-        self.numpyFlatImg = None
-        self.size = None
-        self.packet = []
-        self.encoded = bytearray()
+        self.bch_numpy_img = None
+        self.bch_numpy_flat_img = None
+        self.bch_bch_size = None
+        self.bch_packet = []
+        self.bch_encoded = bytearray()
 
-        self.size = None
-        self.firstDir = None
-        self.secondDir = None
-        self.thirdDir = None
+        self.bch_size = None
+        self.first_dir = None
+        self.second_dir = None
+        self.third_dir = None
 
     """Laduje orazek z folderu  resources"""
     def load_picture(self):
@@ -105,53 +105,53 @@ class Sender:
         logging.debug("Sender: output ")
         logging.debug(self.numpy_flat_img[0])
 
-    def BCHflatArray(self):
+    def bch_flat_array(self):
         logging.debug("SENDER		Prostowanie tablicy")
-        self.sizeX= len(self.numpyImg)
-        self.sizeY= len(self.numpyImg[0]) 
-        self.sizeZ= len(self.numpyImg[0][0])
-        self.size=self.sizeX* self.sizeY* self.sizeZ
-        self.numpyFlatImg= np.array([1])
-        self.numpyFlatImg= np.concatenate((self.numpyFlatImg, self.numpyImg.flatten()), axis= None)
+        self.bch_size_x= len(self.bch_numpy_img)
+        self.bch_size_y= len(self.bch_numpy_img[0]) 
+        self.bch_size_z= len(self.bch_numpy_img[0][0])
+        self.bch_size=self.bch_size_x* self.bch_size_y* self.bch_size_z
+        self.bch_numpy_flat_img= np.array([1])
+        self.bch_numpy_flat_img= np.concatenate((self.bch_numpy_flat_img, self.bch_numpy_img.flatten()), axis= None)
 
-    def BCHtoByteArray(self):
+    def bch_to_byte_array(self):
         logging.debug("SENDER		zamiana obrazka na ByteArray")
-        self.numpyFlatImg = bytearray(self.numpyFlatImg)[8::8]
+        self.bch_numpy_flat_img = bytearray(self.bch_numpy_flat_img)[8::8]
 
-    def BCHPacketize(self):
+    def bch_boundling(self):
         logging.debug("SENDER		Pakietyzacja BCH")
-        mod_size=self.size % 512
-        self.numpyFlatImg = self.numpyFlatImg + bytearray(512-mod_size)
-        for x in range(0, int(len(self.numpyFlatImg)/512)):
-                self.packet.append(self.numpyFlatImg[x*512:(x+1)*512])
+        mod_bch_size=self.bch_size % 512
+        self.bch_numpy_flat_img = self.bch_numpy_flat_img + bytearray(512-mod_bch_size)
+        for x in range(0, int(len(self.bch_numpy_flat_img)/512)):
+                self.bch_packet.append(self.bch_numpy_flat_img[x*512:(x+1)*512])
 
-    def BCHEncode(self):
+    def bch_encode(self):
         logging.debug("SENDER		Kodowanie BCH")
         BCH_POLYNOMIAL = 8219
         BCH_BITS = 123
         bch = bchlib.BCH(BCH_POLYNOMIAL, BCH_BITS)
-        for x in range(0, len(self.packet)):
-                ecc = bch.encode(self.packet[x])
-                self.packet[x]=self.packet[x]+ecc
-                self.encoded= self.encoded+(self.packet[x])
+        for x in range(0, len(self.bch_packet)):
+                ecc = bch.encode(self.bch_packet[x])
+                self.bch_packet[x]=self.bch_packet[x]+ecc
+                self.bch_encoded= self.bch_encoded+(self.bch_packet[x])
 
-    def BCHsend(self):
+    def bch_send(self):
         logging.debug("SENDER		Wysylanie bytearray")
-        return self.encoded
+        return self.bch_encoded
 
-    def BCHsendX(self):
+    def bch_send_x(self):
         logging.debug("SENDER		Wymiar 1")
-        return self.sizeX
+        return self.bch_size_x
 
-    def BCHsendY(self):
+    def bch_send_y(self):
         logging.debug("SENDER		Wymiar 2")
-        return self.sizeY
+        return self.bch_size_y
 
-    def BCHsendZ(self):
+    def bch_send_z(self):
         logging.debug("SENDER		Wymiar 3")
-        return self.sizeZ        
+        return self.bch_size_z        
 
-    def loadPicture(self):
+    def bch_load_picture(self):
         logging.debug("Your working directory is "+os.getcwd())
         os.chdir(r'./application/resources')
         Tk().withdraw() 
@@ -160,9 +160,9 @@ class Sender:
         self.img = Image.open(filename)
         self.img.load()
 
-    def convertImgToNumpyArray(self):
+    def bch_convert_img_to_numpy_array(self):
         logging.debug("SENDER		Konwersja obrazka do numpy array")
-        self.numpyImg = np.array(self.img)
+        self.bch_numpy_img = np.array(self.img)
 
     def triple_encode(self): # kodowanie  tylko 10 pierwszych elementow
         logging.debug("Sender: potrajanie bitów")
