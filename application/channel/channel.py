@@ -14,13 +14,13 @@ class Channel:
         self.numpy_flat_img = None
         self.noisy_image = None
 
-        self.numpyImg = None
-        self.BCHImage = None
-        self.noisyImage = None
-        self.BCHImgCopy = None
-        self.firstDir=None
-        self.secondDir=None
-        self.thirdDir=None
+        self.bch_numpy_img = None
+        self.bch_image = None
+        self.noisy_image = None
+        self.bch_img_copy = None
+        self.first_dir=None
+        self.second_dir=None
+        self.third_dir=None
         self.size=None
 
     """Przekazuje obraz do receivera"""
@@ -140,12 +140,6 @@ class Channel:
         logging.debug("Channel: Wyswietlenie obrazu")
         image.show()
 
-    def BCHshow(self):
-        logging.debug("Channel: Konwersja zaszlumionego obrazu do typu Image")
-        image = Image.fromarray(self.noisyImage)
-        logging.debug("Channel: Wyswietlenie obrazu")
-        image.show()
-
     def flat_array(self):
         logging.debug("Channel: Prostowanie tablicy ")
         first_dim = len(self.noisy_image)
@@ -155,72 +149,72 @@ class Channel:
         self.noisy_image = np.concatenate((self.noisy_image, self.noisy_image.flatten()), axis=None)
         self.noisy_image = np.concatenate((self.noisy_image, self.contr_sum), axis=None)
 
-    def BCHreceiveImage(self, Encoded, sizeX, sizeY, sizeZ):
+    def bch_receive_image(self, Encoded, sizeX, sizeY, sizeZ):
         logging.debug("CHANEL		Odebranie obrazka przez channel")
-        self.BCHImage=Encoded
-        self.BCHImgCopy=Encoded
-        self.firstDir=sizeX
-        self.secondDir=sizeY
-        self.thirdDir=sizeZ
-        self.size=self.firstDir*self.secondDir*self.thirdDir
+        self.bch_image=Encoded
+        self.bch_img_copy=Encoded
+        self.first_dir=sizeX
+        self.second_dir=sizeY
+        self.third_dir=sizeZ
+        self.size=self.first_dir*self.second_dir*self.third_dir
 
-    def BCHdePacketize(self):
+    def bch_deboundling(self):
         logging.debug("CHANEL		BCH depacketize")
         depacket=bytearray()
-        for x in range(0, int(len(self.BCHImage)/712)):
-                depacket=depacket+self.BCHImage[712*x:712*x+512]
-        self.BCHImage=depacket
+        for x in range(0, int(len(self.bch_image)/712)):
+                depacket=depacket+self.bch_image[712*x:712*x+512]
+        self.bch_image=depacket
 
-    def BCHtoNumArray(self):
+    def bch_to_num_array(self):
         logging.debug("CHANEL		BCHImg to numpy array")
-        self.numpyImg= np.array(self.BCHImage[:self.size])
-        self.BCHImage= np.frombuffer(self.numpyImg, dtype=np.uint8)
+        self.bch_numpy_img= np.array(self.bch_image[:self.size])
+        self.bch_image= np.frombuffer(self.bch_numpy_img, dtype=np.uint8)
      
-    def BCHReShape(self):
+    def bch_reshape(self):
         logging.debug("CHANEL		Przywracanie kształtów przez channel")
-        self.numpyImg=np.array([1])
-        self.numpyImg=np.reshape(self.BCHImage.transpose(), (self.firstDir, self.secondDir, self.thirdDir))
+        self.bch_numpy_img=np.array([1])
+        self.bch_numpy_img=np.reshape(self.bch_image.transpose(), (self.first_dir, self.second_dir, self.third_dir))
 
 
-    def BCHflatArray(self):
+    def bch_flat_array(self):
         logging.debug("CHANEL		Prostowanie tablicy")
-        self.BCHImage= np.array([1])
-        self.BCHImage= np.concatenate((self.BCHImage, self.noisyImage.flatten()), axis= None)
+        self.bch_image= np.array([1])
+        self.bch_image= np.concatenate((self.bch_image, self.noisy_image.flatten()), axis= None)
 
-    def BCHtoByteArray(self):
+    def bch_to_byte_array(self):
         logging.debug("CHANEL		zamiana obrazka na ByteArray")
         repacket=bytearray()
-        self.BCHImage = bytearray(self.BCHImage)[8::8]
+        self.bch_image = bytearray(self.bch_image)[8::8]
         mod_size= self.size % 512
-        self.BCHImage= self.BCHImage+ bytearray(512-mod_size)
-        for x in range(0, int(len(self.BCHImage)/512)):
-                packet=self.BCHImage[x*512:(x+1)*512]+self.BCHImgCopy[(x)*712+512:(x+1)*712]
+        self.bch_image= self.bch_image+ bytearray(512-mod_size)
+        for x in range(0, int(len(self.bch_image)/512)):
+                packet=self.bch_image[x*512:(x+1)*512]+self.bch_img_copy[(x)*712+512:(x+1)*712]
                 repacket= repacket+packet
-        self.BCHImage=repacket
+        self.bch_image=repacket
 
-    def BCHsend(self):
+    def bch_send(self):
         logging.debug("CHANEL		Przekazanie bytearray przez channel")
-        return  self.BCHImage
+        return  self.bch_image
 
-    def BCHsendX(self):
+    def bch_send_x(self):
         logging.debug("CHANEL		Wymiar 1")
-        return self.firstDir
+        return self.first_dir
 
-    def BCHsendY(self):
+    def bch_send_y(self):
         logging.debug("CHANEL		Wymiar 2")
-        return self.secondDir
+        return self.second_dir
 
-    def BCHsendZ(self):
+    def bch_send_z(self):
         logging.debug("CHANEL		Wymiar 3")
-        return self.thirdDir
+        return self.third_dir
 
     def addNoise(self):
         logging.debug("CHANEL		Dudawanie zakłóceń")
         mean = 0.0
         var = 0.6
         sigma = var**0.5
-        gauss = np.array(self.numpyImg.shape)
-        gauss = np.random.normal(mean,sigma,(self.firstDir,self.secondDir,self.thirdDir))
-        gauss = gauss.reshape(self.firstDir,self.secondDir,self.thirdDir)
-        noisy = self.numpyImg + gauss
-        self.noisyImage = noisy.astype('uint8')
+        gauss = np.array(self.bch_numpy_img.shape)
+        gauss = np.random.normal(mean,sigma,(self.first_dir,self.second_dir,self.third_dir))
+        gauss = gauss.reshape(self.first_dir,self.second_dir,self.third_dir)
+        noisy = self.bch_numpy_img + gauss
+        self.noisy_image = noisy.astype('uint8')

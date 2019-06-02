@@ -158,24 +158,24 @@ class Controler:
         s.bch_encode()
         #-------------------------------------------
         # wysłanie obrazka do kanał
-        c.BCHreceiveImage(s.bch_send(),s.bch_send_x(),s.bch_send_y(),s.bch_send_z())
+        c.bch_receive_image(s.bch_send(),s.bch_send_x(),s.bch_send_y(),s.bch_send_z())
         #-------------------------------------------
-        c.BCHdePacketize()
+        c.bch_deboundling()
         #zmiana formatu
-        c.BCHtoNumArray()
+        c.bch_to_num_array()
         #Przywracanie wymiarów
-        c.BCHReShape()
+        c.bch_reshape()
         #zauszumienie
         c.addNoise()
         #wyświetlenie zaszuumionego obazu
-        c.BCHshow()
+        c.show()
         #Tworzenie tablicy 1D
-        c.BCHflatArray()
+        c.bch_flat_array()
         #zmiana formatu
-        c.BCHtoByteArray()
+        c.bch_to_byte_array()
         #-------------------------------------------
         #oderanie obrazka z kanału
-        r.BCHreceive(c.BCHsend(), c.BCHsendX(), c.BCHsendY(), c.BCHsendZ())
+        r.BCHreceive(c.bch_send(), c.bch_send_x(), c.bch_send_y(), c.bch_send_z())
         #-------------------------------------------
         r.BCHdePacketize()
         #zmiana formatu
