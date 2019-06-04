@@ -18,10 +18,13 @@ class Channel:
         self.bch_image = None
         self.noisy_image = None
         self.bch_img_copy = None
-        self.first_dir=None
-        self.second_dir=None
-        self.third_dir=None
-        self.size=None
+        self.first_dir = None
+        self.second_dir = None
+        self.third_dir = None
+        self.size = None
+
+        self.ber = None
+        self.errors_count = None
 
     """Przekazuje obraz do receivera"""
     def take_image(self):
@@ -82,40 +85,39 @@ class Channel:
         self.noisy_image = self.numpy_flat_img
 
     """Przyjmuje numpy array i zwraca zaszumioną kopię tych samych wymiarów"""
-    @staticmethod
-    def add_noise(data, mean=0.0, var=None, sigma=None):
+    # @staticmethod
+    def add_noise(self, data, mean=0.0, var=None, sigma=None):
         assert not (var and sigma)
         if var:
             sigma = var ** 0.5
         elif not sigma:
             sigma = 0.23
 
+        self.errors_count = 0
         unpacked_data = np.unpackbits(data)
         noise = np.random.normal(mean, sigma, unpacked_data.shape)
-        noised_unpacked_data = unpacked_data + noise
-        rounded_noised_unpacked_data = np.array([0] * len(unpacked_data))
-        for i, val in enumerate(noised_unpacked_data):
-            if val < 0.5:
-                rounded_noised_unpacked_data[i] = 0
-            else:
-                rounded_noised_unpacked_data[i] = 1
-        packed_noised = np.packbits(rounded_noised_unpacked_data).reshape(data.shape)
-        return packed_noised
+        noised_unpacked_data = np.array([0] * len(unpacked_data))
 
-    def add_noise_to_numpy_flat_img(self):
+        for i, val in enumerate(noise):
+            if val >= 0.5:
+                noised_unpacked_data[i] = 1
+                if unpacked_data[i] == 0:
+                    self.errors_count += 1
+            elif val < -0.5:
+                noised_unpacked_data[i] = 0
+                if unpacked_data[i] == 1:
+                    self.errors_count += 1
+            else:
+                noised_unpacked_data[i] = unpacked_data[i]
+
+        noised_packed_data = np.packbits(noised_unpacked_data).reshape(data.shape)
+        self.ber = self.errors_count / len(noise)
+        logging.info(f"Channel: Generated noised image with BER = {self.ber}")
+        return noised_packed_data
+
+    def add_noise_to_numpy_flat_img(self, sigma=None):
         logging.debug("Dodawanie zakłóceń do numpy_flat_img")
-        self.noisy_image = self.add_noise(self.numpy_flat_img)
-        return None
-        mean = 0.0
-        var = 0.05
-        sigma = var ** 0.5
-        numpy_array_unpacked = np.unpackbits(self.numpy_flat_img)
-        gauss = np.random.normal(mean, sigma, numpy_array_unpacked.shape)
-        noisy_unpacked = numpy_array_unpacked + gauss
-        for i, val in enumerate(noisy_unpacked):
-            numpy_array_unpacked[i] = 0 if val < 0.5 else 1
-        self.noisy_image = np.reshape(np.packbits(numpy_array_unpacked), self.numpy_flat_img.shape)
-        self.noisy_image = self.noisy_image.astype('uint8')
+        self.noisy_image = self.add_noise(self.numpy_flat_img, sigma)
 
     def add_noise3(self):
         logging.debug("Channel: Dodawanie zakłóceń do potrajania bitów")
