@@ -1,6 +1,7 @@
 """Tutaj sender bedzie przekazywal obrazy. Nastepnie beda wykonywane na nich algorytmy a nastepnie wynik zostanie przekazany do receivera"""
 import logging
 import numpy as np
+import random
 from PIL import Image
 
 
@@ -114,6 +115,38 @@ class Channel:
         self.ber = self.errors_count / len(noise)
         logging.info(f"Channel: Generated noised image with BER = {self.ber}")
         return noised_packed_data
+
+    """Zwraca numpy array o kształcie wejścia z błędami grupowymi"""
+    def add_burst_errors(self, data, sigma, a, b):
+        if not sigma:
+            sigma = 0.2
+        if not a:
+            a = 60
+        if not b:
+            b = 400
+        unpacked_data = np.unpackbits(data)
+        data_with_burst_errors = np.array([0] * len(unpacked_data))
+        i = 0
+        self.errors_count = 0
+        while i in range(len(unpacked_data)):
+            if np.abs(np.random.normal(0, sigma)) >= 0.5:
+                for r in range(random.randint(a, b)):
+                    if i < len(unpacked_data):
+                        data_with_burst_errors[i] = 0
+                        if unpacked_data[i] == 1:
+                            self.errors_count += 1
+                        i += 1
+            else:
+                data_with_burst_errors[i] = unpacked_data[i]
+                i += 1
+        packed_bursted_data = np.packbits(data_with_burst_errors).reshape(data.shape)
+        self.ber = self.errors_count / len(unpacked_data)
+        logging.info(f"Channel: BER = {self.ber}")
+        return packed_bursted_data
+
+    def add_burst_errors_to_numpy_flat_img(self, sigma=None, a=None, b=None):
+        logging.debug("Channel: Generating burst errors")
+        self.noisy_image = self.add_burst_errors(self.numpy_flat_img, sigma, a, b)
 
     def add_noise_to_numpy_flat_img(self, sigma=None):
         logging.debug("Dodawanie zakłóceń do numpy_flat_img")
