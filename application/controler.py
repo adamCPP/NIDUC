@@ -1,21 +1,26 @@
 """Glowna aplikacja"""
 
 
-from image_receiver.im_receiver  import Receiver
-from image_sender.im_sender import Sender
-from channel.channel import Channel
-from hamming.hamming import Hamming
-from statistics.statistics import Statistics
+from application.image_receiver.im_receiver  import Receiver
+from application.image_sender.im_sender import Sender
+from application.channel.channel import Channel
+from application.hamming.hamming import Hamming
+from application.statistics.statistics import Statistics
+from PIL import Image, ImageDraw, ImageFont
 import logging
 import tkinter as tk
+import pickle
 from tkinter.filedialog import askopenfilename
 
 
 class Controler:
 
+    statistics_file_name = "statistics"
+
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG)
         logging.debug("Controler created")
+        self.statistics_file = open(Controler.statistics_file_name, 'ab+')
         self.main()
 
     def exit(self):
@@ -23,6 +28,9 @@ class Controler:
 
     def main(self):
         logging.debug("Main")
+
+        self.hamming_test()
+
         HEIGH = 180
         WIDTH = 200
 
@@ -50,6 +58,55 @@ class Controler:
 
         root.mainloop()
 
+    def hamming_test(self):
+        hamming = Hamming(7)
+        for i in range(17, 100):
+            sigma = 0.01 * i
+            #for no in range(1, 10):
+            img = Image.new('RGB', (500, 500), color=(0, 0, 0))
+
+            img_name = f'./tests/h{hamming.n}{hamming.k}sd{sigma}no{0}.png'
+            img.save(img_name)
+
+            logging.debug("Hamming")
+            hamming = Hamming()
+            sender = Sender()
+            channel = Channel()
+            receiver = Receiver()
+
+            sender.img = Image.open(img_name)
+            sender.img.load()
+            sender.converting_to_numpy_array()
+            #sender.show()
+
+            encoded = hamming.encode(sender.numpy_img)
+            channel.receive_image(encoded)
+            channel.add_noise_to_numpy_flat_img(sigma)
+
+            receiver.receive_img_as_np_array(channel.take_image())
+            decoded = hamming.decode(receiver.numpy_flat_img)
+            receiver.numpy_flat_img = decoded
+
+            receiver.reshape(sender.numpy_img.shape)
+            receiver.convert_numpy_array_to_image()
+
+            stat = Statistics(sender.img, receiver.img, f"Gaussian noise", channel.ber,
+                              f"Hamming ({hamming.n}, {hamming.k})")
+
+            img = stat.noisy_img
+            text = f"Standard deviation {sigma}\nBER {stat.primary_ber}\nto BER {stat.ber}" + \
+                   f"\nfor Hamming ({hamming.n}, {hamming.k})"
+
+            # fonts-japanese-mincho.ttf, Loma, ipamp, batang, FreeSerifItalic, Ubuntu-MI.ttf
+            fnt = ImageFont.truetype('/usr/share/fonts/truetype/ubuntu/Ubuntu-MI.ttf', 18)
+            d = ImageDraw.Draw(img)
+            d.text((30, 30), text, font=fnt, fill=(200, 200, 200))
+            img.save(img_name)
+            #receiver.show()
+
+            #stat.diff_img.show()
+            pickle.dump(stat, self.statistics_file)
+
     def without_coding(self):
         logging.debug("Bez kodowania")
         sender = Sender()
@@ -71,10 +128,9 @@ class Controler:
         stat = Statistics()
         stat.difference_img(sender.img, receiver.img)
 
-    def hamming(self):
+    def hamming(self, sigma=None):
         logging.debug("Hamming")
         hamming = Hamming()
-        # hamming.generate_encoding_dictionary()
         sender = Sender()
         channel = Channel()
         receiver = Receiver()
@@ -84,11 +140,9 @@ class Controler:
         sender.converting_to_numpy_array()
         sender.show()
 
-        print(sender.numpy_img.shape)
-
         encoded = hamming.encode(sender.numpy_img)
         channel.receive_image(encoded)
-        channel.add_noise_to_numpy_flat_img()
+        channel.add_noise_to_numpy_flat_img(sigma)
 
         receiver.receive_img_as_np_array(channel.take_image())
         decoded = hamming.decode(receiver.numpy_flat_img)
@@ -97,8 +151,11 @@ class Controler:
         receiver.reshape(sender.numpy_img.shape)
         receiver.convert_numpy_array_to_image()
         receiver.show()
-        stat = Statistics()
-        stat.difference_img(sender.img, receiver.img)
+
+        stat = Statistics(sender.img, receiver.img, f"Gaussian noise", channel.ber,
+                          f"Hamming ({hamming.n}, {hamming.k})")
+        stat.diff_img.show()
+        pickle.dump(stat, self.statistics_file)
 
     def reed_solomon(self):
         logging.debug("Reed Solomon")
