@@ -41,10 +41,10 @@ class Statistics:
 
     """Tworzy obraz pokazujący zmienione piksele"""
     @staticmethod
-    def difference_img(self, img1, img2):
+    def difference_img(img1, img2):
         logging.debug("Statistics: Difference image")
-        self.diff_img = ImageChops.difference(img1, img2)
-        self.diff_img.show()
+        diff_img = ImageChops.difference(img1, img2)
+        diff_img.show()
 
     """Wyznacza liczbę błędów i bitów"""
     def bits_difference(self):
