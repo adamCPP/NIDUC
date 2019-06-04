@@ -29,7 +29,7 @@ class Controler:
     def main(self):
         logging.debug("Main")
 
-        self.hamming_test()
+        # self.hamming_test()
 
         HEIGH = 180
         WIDTH = 200
@@ -59,7 +59,7 @@ class Controler:
         root.mainloop()
 
     def hamming_test(self):
-        hamming = Hamming(7)
+        hamming = Hamming(15)
         for i in range(17, 100):
             sigma = 0.01 * i
             #for no in range(1, 10):
@@ -81,7 +81,8 @@ class Controler:
 
             encoded = hamming.encode(sender.numpy_img)
             channel.receive_image(encoded)
-            channel.add_noise_to_numpy_flat_img(sigma)
+            # channel.add_noise_to_numpy_flat_img(sigma)
+            channel.add_burst_errors_to_numpy_flat_img()
 
             receiver.receive_img_as_np_array(channel.take_image())
             decoded = hamming.decode(receiver.numpy_flat_img)
@@ -119,14 +120,15 @@ class Controler:
         sender.show()
 
         channel.receive_image(sender.numpy_img)
-        channel.add_noise_to_numpy_flat_img()
+        # channel.add_noise_to_numpy_flat_img()
+        channel.add_burst_errors_to_numpy_flat_img()
 
         receiver.receive_img_as_np_array(channel.take_image())
         receiver.reshape(sender.numpy_img.shape)
         receiver.convert_numpy_array_to_image()
         receiver.show()
-        stat = Statistics()
-        stat.difference_img(sender.img, receiver.img)
+        # stat = Statistics()
+        Statistics.difference_img(sender.img, receiver.img)
 
     def hamming(self, sigma=None):
         logging.debug("Hamming")
@@ -142,7 +144,8 @@ class Controler:
 
         encoded = hamming.encode(sender.numpy_img)
         channel.receive_image(encoded)
-        channel.add_noise_to_numpy_flat_img(sigma)
+        channel.add_burst_errors_to_numpy_flat_img()
+        # channel.add_noise_to_numpy_flat_img(sigma)
 
         receiver.receive_img_as_np_array(channel.take_image())
         decoded = hamming.decode(receiver.numpy_flat_img)
@@ -152,7 +155,9 @@ class Controler:
         receiver.convert_numpy_array_to_image()
         receiver.show()
 
-        stat = Statistics(sender.img, receiver.img, f"Gaussian noise", channel.ber,
+        noise_name = f"Gaussian noise"
+        noise_name2 = "Burst errors"
+        stat = Statistics(sender.img, receiver.img, noise_name2, channel.ber,
                           f"Hamming ({hamming.n}, {hamming.k})")
         stat.diff_img.show()
         pickle.dump(stat, self.statistics_file)
