@@ -1,34 +1,60 @@
 '''Systematyczny cykliczny kod Hamminga'''
 import logging
 import numpy as np
+from itertools import combinations_with_replacement
+from itertools import permutations
+import math
 
 
 class Hamming:
 
-    n = 7
-    k = 4
+    encoding_dictionary_mode = False
+    encoding_dictionary = {}
 
     """Uruchamia logi"""
-    def __init__(self, n=7, k=(n+1)//2):
+    def __init__(self, n=7):
         logging.basicConfig(level=logging.DEBUG)
-        logging.debug(f"Stworzenie hamming ({self.n}, {self.k})")
         self.input = None
         self.output = None
         self.n = n
-        self.k = k
+        self.k = (n+1) - int(math.log((n+1), 2)) - 1
+        logging.debug(f"Hamming: Stworzenie hamming ({self.n}, {self.k})")
+
+    """Generuje słownik przyspieszający kodowanie"""
+    def generate_encoding_dictionary(self):
+        """possible_info_bits = combinations_with_replacement([0, 1], self.k)
+        print(possible_info_bits)
+        for bits in list(possible_info_bits):"""
+        for combination in combinations_with_replacement([0, 1], self.k):
+            for permutation in permutations(combination):
+                self.encoding_dictionary[permutation] = self.encode_bits(self.add_parity_bits(permutation))
+        self.encoding_dictionary_mode = True
+        logging.debug("Hamming: Słownik wygenerowany")
 
     """Uogólnione kodowanie Hamminga"""
     def encode(self, data):
         logging.debug(f"Kodowanie Hamminga ({self.n}, {self.k})")
-        print(f"data type: {type(data)}")
         unpacked = np.unpackbits(data)
         for _ in range(len(unpacked) % self.k):
-            unpacked.append(0)
+            unpacked = np.concatenate((unpacked, [0]))
         bits_array = unpacked.reshape(-1, int(self.k))
         output = []
         for bits in bits_array:
             prepared_bits = self.add_parity_bits(bits)
             output.append(self.encode_bits(prepared_bits))
+        return np.array(np.packbits(output), dtype=np.uint8)
+
+    """Uogólnione kodowanie Hamminga"""
+    def encode2(self, data):
+        logging.debug(f"Kodowanie Hamminga ({self.n}, {self.k})")
+        unpacked = np.unpackbits(data)
+        for _ in range(len(unpacked) % self.k):
+            np.concatenate(unpacked, )
+        bits_array = unpacked.reshape(-1, int(self.k))
+        output = []
+        for bits in bits_array:
+            encoded = self.encoding_dictionary[tuple(bits)]
+            output.append(encoded)
         return np.array(np.packbits(output), dtype=np.uint8)
 
     """Wstawia zera w miejsca o pozycji będącej potęgą dwójki"""
@@ -49,6 +75,21 @@ class Hamming:
 
     """Koduje n bitów"""
     def encode_bits(self, bits):
+        power_of_2 = 1
+        while power_of_2 <= self.k:
+            sum = 0
+            bits_index = self.n - 1
+            while bits_index >= 0:
+                for l in range(power_of_2):
+                    sum += bits[bits_index]
+                    bits_index -= 1
+                bits_index -= power_of_2
+            bits[power_of_2 - 1] = sum % 2
+            power_of_2 *= 2
+        return bits
+
+    """Koduje n bitów"""
+    def encode_bits2(self, bits):
         power_of_2 = 1
         while power_of_2 <= self.k:
             sum = 0
@@ -113,3 +154,22 @@ class Hamming:
         if sum % 2 != 0:
             return k
         return 0
+
+
+"""
+print(list(combinations_with_replacement([0, 2], 3)))
+hamming = Hamming()
+bits = [0, 0, 0, 1]
+print(bits)
+bits = hamming.add_parity_bits(bits)
+print(bits)
+bits = hamming.encode_bits(bits)
+print(bits)
+bits[6] = 0
+print(bits)
+bits = hamming.get_corrected_bits(bits)
+print(bits)
+"""
+
+
+
