@@ -1,5 +1,5 @@
 bchlib==0.7
 numpy==1.16.2
-Pillow==6.0.0
+Pillow==8.1.1
 pkg-resources==0.0.0
 unireedsolomon==1.0
